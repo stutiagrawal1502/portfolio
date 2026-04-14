@@ -1,26 +1,402 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
 @import "tailwindcss";
 
+/* ─── Tailwind v4 Theme ───────────────────────────────────────────────── */
+@theme {
+  --color-ink:          #1A1714;
+  --color-paper:        #F7F3EE;
+  --color-dawn-blue:    #2B4C7E;
+  --color-dawn-rose:    #C4735A;
+  --color-garden-green: #3D6B4F;
+  --color-poem-gold:    #B8860B;
+  --color-surface:      #F0EBE3;
+  --color-border:       #D9D0C4;
+  --color-muted:        #8A7F74;
+
+  --font-display: 'Playfair Display', serif;
+  --font-mono:    'DM Mono', monospace;
+  --font-sans:    'DM Sans', sans-serif;
+
+  --animate-fade-up:  fadeUp 0.6s ease forwards;
+  --animate-slide-up: slideUp 0.5s ease forwards;
+}
+
+/* ─── CSS Variable System ─────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dawn sky — the 5am palette */
+  --ink:          #1A1714;
+  --paper:        #F7F3EE;
+  --dawn-blue:    #2B4C7E;
+  --dawn-rose:    #C4735A;
+  --garden-green: #3D6B4F;
+  --poem-gold:    #B8860B;
+
+  /* Functional */
+  --surface:      #F0EBE3;
+  --border:       #D9D0C4;
+  --muted:        #8A7F74;
+  --white:        #FFFFFF;
+
+  /* Mode-specific */
+  --work-accent:  #2B4C7E;
+  --life-accent:  #C4735A;
+  --current-accent: var(--work-accent);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark mode — private dashboard */
+[data-theme="dark"] {
+  --ink:     #F7F3EE;
+  --paper:   #1A1714;
+  --surface: #242019;
+  --border:  #3A352E;
+  --muted:   #7A7068;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base Styles ─────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ─── Typography Helpers ──────────────────────────────────────────────── */
+.font-display { font-family: 'Playfair Display', serif; }
+.font-mono-dm { font-family: 'DM Mono', monospace; }
+.font-sans-dm { font-family: 'DM Sans', sans-serif; }
+
+/* ─── Paper Texture ───────────────────────────────────────────────────── */
+.paper-texture {
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.poem-bg {
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* ─── The Toggle ──────────────────────────────────────────────────────── */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-track {
+  width: 160px;
+  height: 48px;
+  border-radius: 24px;
+  background: var(--ink);
+  position: relative;
+  border: 2px solid var(--border);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.toggle-track.life {
+  border-color: var(--dawn-rose);
+  box-shadow: 0 0 20px rgba(196, 115, 90, 0.15);
+}
+
+.toggle-track.work {
+  border-color: var(--dawn-blue);
+  box-shadow: 0 0 20px rgba(43, 76, 126, 0.15);
+}
+
+.toggle-puck {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--paper);
+  position: absolute;
+  top: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+}
+
+.toggle-label.active {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+[data-theme="dark"] .toggle-label.active {
+  color: var(--ink);
+}
+
+/* ─── Mode-based accent transitions ──────────────────────────────────── */
+[data-mode="work"] {
+  --current-accent: var(--work-accent);
+}
+
+[data-mode="life"] {
+  --current-accent: var(--life-accent);
+}
+
+/* ─── Dawn Background Animation ──────────────────────────────────────── */
+@keyframes dawnShift {
+  0%   { background-position: 50% 0%; }
+  50%  { background-position: 50% 10%; }
+  100% { background-position: 50% 0%; }
+}
+
+@keyframes starFade {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 0.15; }
+  100% { opacity: 0.4; }
+}
+
+/* ─── Page Animation Keyframes ────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ─── Progress Bar — hand-drawn feel ─────────────────────────────────── */
+.progress-bar-track {
+  background: var(--border);
+  height: 12px;
+  clip-path: polygon(0 20%, 1% 0, 99% 5%, 100% 0, 100% 80%, 99% 100%, 1% 95%, 0 100%);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--garden-green);
+  transition: width 1.2s ease;
+}
+
+/* ─── Stamp / Filter Pills ────────────────────────────────────────────── */
+.stamp-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 2px solid var(--ink);
+  padding: 4px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  transform: rotate(-0.5deg);
+  display: inline-block;
+  color: var(--ink);
+  background: transparent;
+}
+
+.stamp-pill:hover {
+  background: var(--surface);
+  transform: rotate(0deg);
+}
+
+.stamp-pill.active {
+  background: var(--ink);
+  color: var(--paper);
+  transform: rotate(0deg);
+}
+
+/* ─── Card Component ──────────────────────────────────────────────────── */
+.dawn-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dawn-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(26, 23, 20, 0.08);
+}
+
+/* ─── Type Badges ─────────────────────────────────────────────────────── */
+.type-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.type-badge-poem     { background: rgba(184, 134, 11, 0.12);  color: var(--poem-gold); }
+.type-badge-blog     { background: rgba(43, 76, 126, 0.12);   color: var(--dawn-blue); }
+.type-badge-journal  { background: rgba(138, 127, 116, 0.15); color: var(--muted); }
+.type-badge-csr      { background: rgba(61, 107, 79, 0.12);   color: var(--garden-green); }
+.type-badge-sports   { background: rgba(196, 115, 90, 0.12);  color: var(--dawn-rose); }
+.type-badge-essay    { background: rgba(26, 23, 20, 0.08);    color: var(--ink); }
+.type-badge-fitness  { background: rgba(61, 107, 79, 0.12);   color: var(--garden-green); }
+
+/* ─── Mood Tag ────────────────────────────────────────────────────────── */
+.mood-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: rgba(138, 127, 116, 0.1);
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* ─── Poem Page ───────────────────────────────────────────────────────── */
+.poem-body {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 2;
+  color: var(--ink);
+  white-space: pre-wrap;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ─── Prose content ───────────────────────────────────────────────────── */
+.prose-dawn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--ink);
+  max-width: 680px;
+}
+
+.prose-dawn h1,
+.prose-dawn h2,
+.prose-dawn h3 {
+  font-family: 'Playfair Display', serif;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.prose-dawn p { margin-bottom: 1.4em; }
+
+.prose-dawn blockquote {
+  border-left: 3px solid var(--poem-gold);
+  padding-left: 20px;
+  font-style: italic;
+  color: var(--muted);
+  margin: 2em 0;
+}
+
+.prose-dawn code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.9em;
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ─── Milestone stamps ────────────────────────────────────────────────── */
+.milestone-stamp {
+  transform: rotate(-1deg);
+  border: 2px solid var(--poem-gold);
+  display: inline-block;
+  padding: 12px 20px;
+  font-family: 'DM Mono', monospace;
+  color: var(--poem-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 13px;
+}
+
+/* ─── Nav ─────────────────────────────────────────────────────────────── */
+.nav-transparent {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.nav-filled {
+  background: rgba(240, 235, 227, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="dark"] .nav-filled {
+  background: rgba(36, 32, 25, 0.92);
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ─── Selection ───────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(43, 76, 126, 0.2);
+  color: var(--ink);
+}
+
+/* ─── Focus styles ────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--dawn-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── Range inputs ────────────────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
 }

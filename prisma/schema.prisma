@@ -1,0 +1,105 @@
+// Stuti PWA — Prisma Schema
+// Database: Supabase PostgreSQL
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  content     String     @db.Text
+  excerpt     String?
+  type        PostType
+  status      PostStatus
+  mood        String?
+  tags        String[]
+  pillar      String?
+  coverImage  String?
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model FitnessDay {
+  id            String   @id @default(cuid())
+  date          DateTime @unique
+  dayNumber     Int
+  worked        Boolean  @default(false)
+  workoutType   String?
+  durationMins  Int?
+  energyBefore  Int?
+  energyAfter   Int?
+  waterLitres   Float?
+  sleepHours    Float?
+  notes         String?  @db.Text
+  isPublic      Boolean  @default(false)
+  mood          String?
+  createdAt     DateTime @default(now())
+}
+
+model HealthMetric {
+  id         String   @id @default(cuid())
+  date       DateTime
+  metricName String
+  value      Float
+  unit       String
+  notes      String?
+  createdAt  DateTime @default(now())
+}
+
+model ContentPlan {
+  id        String        @id @default(cuid())
+  date      DateTime
+  title     String?
+  type      String
+  platform  String
+  pillar    String?
+  status    ContentStatus
+  caption   String?       @db.Text
+  notes     String?
+  postId    String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model JourneyConfig {
+  id            String   @id @default("singleton")
+  startDate     DateTime
+  currentStreak Int      @default(0)
+  longestStreak Int      @default(0)
+  totalDays     Int      @default(0)
+  phase         Int      @default(1)
+  note          String?
+  updatedAt     DateTime @updatedAt
+}
+
+enum PostType {
+  BLOG
+  POEM
+  JOURNAL
+  ESSAY
+  CSR
+  SPORTS
+  FITNESS_REFLECTION
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  PRIVATE
+}
+
+enum ContentStatus {
+  IDEA
+  DRAFTED
+  RECORDED
+  POSTED
+  SKIPPED
+}
