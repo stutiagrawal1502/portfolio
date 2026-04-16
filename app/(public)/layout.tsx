@@ -3,6 +3,7 @@
 import { Nav } from '@/components/navigation/Nav'
 import { InstallPrompt } from '@/components/pwa/InstallPrompt'
 import { usePathname } from 'next/navigation'
+import { Analytics } from "@vercel/analytics/next"
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -21,6 +22,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       )}
       {children}
       <InstallPrompt />
+      <Analytics />
     </>
   )
 }
