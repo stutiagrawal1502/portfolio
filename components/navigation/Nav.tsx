@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { MobileNav } from './MobileNav'
 
@@ -16,8 +15,16 @@ const navLinks = [
 ]
 
 export function Nav() {
-  const { data: session } = useSession()
+  const [isAuthed, setIsAuthed] = useState(false)
   const pathname = usePathname()
+
+  // Detect login state from the auth cookie (client-readable via document.cookie is blocked
+  // since it's httpOnly — so we probe a lightweight API endpoint once on mount)
+  useEffect(() => {
+    fetch('/api/auth/me', { method: 'GET' })
+      .then(r => setIsAuthed(r.ok))
+      .catch(() => setIsAuthed(false))
+  }, [])
   const isHome = pathname === '/'
 
   const [scrolled, setScrolled] = useState(false)
@@ -112,7 +119,7 @@ export function Nav() {
                 {link.label}
               </Link>
             ))}
-            {session && (
+            {isAuthed && (
               <Link
                 href="/dashboard"
                 style={{
@@ -146,7 +153,7 @@ export function Nav() {
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         links={navLinks}
-        showDashboard={!!session}
+        showDashboard={isAuthed}
         mode={mode}
       />
     </>

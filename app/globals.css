@@ -375,18 +375,119 @@ body {
   border-radius: 4px;
 }
 
-/* ─── Range inputs (dashboard) ───────────────────────────────────────── */
+/* ─── Range inputs ────────────────────────────────────────────────────── */
 input[type="range"] {
   -webkit-appearance: none; appearance: none;
-  width: 100%; height: 4px;
-  background: #E2E0DB; border-radius: 2px; outline: none;
+  width: 100%; height: 3px;
+  background: var(--range-track, #E2E0DB);
+  border-radius: 2px; outline: none; cursor: pointer;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--ink); cursor: pointer;
-  transition: transform 0.15s ease;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 3px var(--surface);
+  cursor: pointer; transition: transform 0.15s ease;
 }
 
-input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+/* ─── Dark-mode form controls ─────────────────────────────────────────── */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  color-scheme: dark;
+}
+
+[data-theme="dark"] input[type="range"] {
+  --range-track: #2E2B27;
+}
+
+/* ─── Cockpit (private dashboard) utilities ──────────────────────────── */
+.cockpit-card {
+  background: var(--surface);
+  border: 1px solid var(--border-solid);
+  border-radius: 12px;
+  padding: 20px 22px;
+}
+
+.cockpit-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.cockpit-input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border-solid);
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.cockpit-input:focus { border-color: var(--muted); }
+
+.cockpit-input::placeholder { color: var(--muted); opacity: 0.45; }
+
+.cockpit-btn-group {
+  display: flex;
+  gap: 4px;
+  background: var(--border-solid);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.cockpit-btn {
+  flex: 1;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 0;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  background: transparent;
+  color: var(--muted);
+}
+
+.cockpit-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.cockpit-stat-block {
+  background: var(--surface);
+  border: 1px solid var(--border-solid);
+  border-radius: 10px;
+  padding: 14px 18px;
+  flex: 1;
+}
+
+/* ─── Write page ──────────────────────────────────────────────────────── */
+.write-select {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--border-solid);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: var(--ink);
+  outline: none;
+  cursor: pointer;
+  color-scheme: dark;
+}

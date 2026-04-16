@@ -13,6 +13,49 @@ interface QuickLogState {
   notes: string
 }
 
+function Slider({ label, value, min, max, step, unit, accent, onChange }: {
+  label: string
+  value: number
+  min: number
+  max: number
+  step: number
+  unit: string
+  accent: string
+  onChange: (v: number) => void
+}) {
+  const pct = ((value - min) / (max - min)) * 100
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+          {label}
+        </span>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 14, fontWeight: 600, color: accent }}>
+          {value}{unit}
+        </span>
+      </div>
+      <div style={{ position: 'relative' }}>
+        {/* Filled track */}
+        <div style={{
+          position: 'absolute', top: '50%', left: 0,
+          width: `${pct}%`, height: 3,
+          background: accent, borderRadius: 2,
+          transform: 'translateY(-50%)',
+          pointerEvents: 'none',
+          transition: 'width 0.1s',
+        }} />
+        <input
+          type="range"
+          min={min} max={max} step={step}
+          value={value}
+          onChange={e => onChange(+e.target.value)}
+          style={{ position: 'relative', zIndex: 1 }}
+        />
+      </div>
+    </div>
+  )
+}
+
 export function QuickLog() {
   const [state, setState] = useState<QuickLogState>({
     worked: 'no',
@@ -48,115 +91,104 @@ export function QuickLog() {
     }
   }
 
-  const btn = (value: WorkoutStatus, label: string) => (
-    <button
-      key={value}
-      onClick={() => setState(s => ({ ...s, worked: value }))}
-      className="stamp-pill flex-1 text-center py-2"
-      style={{
-        background: state.worked === value ? 'var(--ink)' : 'transparent',
-        color: state.worked === value ? 'var(--paper)' : 'var(--ink)',
-      }}
-    >
-      {label}
-    </button>
-  )
+  const workoutOptions: { value: WorkoutStatus; label: string }[] = [
+    { value: 'yes',     label: 'Done'    },
+    { value: 'partial', label: 'Partial' },
+    { value: 'no',      label: 'Rest'    },
+  ]
 
   return (
-    <div
-      className="rounded-sm p-5 border"
-      style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-    >
-      <p
-        className="font-mono text-xs tracking-widest uppercase mb-4"
-        style={{ color: 'var(--muted)' }}
-      >
-        Quick Log
-      </p>
+    <div className="cockpit-card" style={{ display: 'flex', flexDirection: 'column' }}>
+      <span className="cockpit-label">Morning log</span>
 
-      {/* Workout buttons */}
-      <div className="flex gap-2 mb-4">
-        {btn('yes', 'Yes')}
-        {btn('no', 'No')}
-        {btn('partial', '½')}
+      {/* Workout toggle */}
+      <div style={{ marginBottom: 18 }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>
+          Workout?
+        </div>
+        <div className="cockpit-btn-group">
+          {workoutOptions.map(o => (
+            <button
+              key={o.value}
+              className={`cockpit-btn${state.worked === o.value ? ' active' : ''}`}
+              onClick={() => setState(s => ({ ...s, worked: o.value }))}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Workout type */}
+      {/* Workout type input (only when done/partial) */}
       {state.worked !== 'no' && (
         <input
           type="text"
-          placeholder="What did you do? (optional)"
+          className="cockpit-input"
+          placeholder="What did you do?"
           value={state.workoutType}
           onChange={e => setState(s => ({ ...s, workoutType: e.target.value }))}
-          className="w-full bg-transparent border border-border rounded-sm px-3 py-2 font-sans text-sm text-ink placeholder-muted mb-4 focus:outline-none focus:border-ink"
-          style={{ borderColor: 'var(--border)' }}
+          style={{ marginBottom: 18 }}
         />
       )}
 
-      {/* Energy slider */}
-      <div className="mb-4">
-        <div className="flex justify-between mb-1">
-          <label className="font-mono text-xs text-muted">Energy</label>
-          <span className="font-mono text-xs text-ink">{state.energy}/10</span>
-        </div>
-        <input
-          type="range"
-          min={1} max={10} step={1}
-          value={state.energy}
-          onChange={e => setState(s => ({ ...s, energy: +e.target.value }))}
-        />
-      </div>
-
-      {/* Water slider */}
-      <div className="mb-4">
-        <div className="flex justify-between mb-1">
-          <label className="font-mono text-xs text-muted">Water</label>
-          <span className="font-mono text-xs text-ink">{state.water}L</span>
-        </div>
-        <input
-          type="range"
-          min={0} max={3} step={0.5}
-          value={state.water}
-          onChange={e => setState(s => ({ ...s, water: +e.target.value }))}
-        />
-      </div>
-
-      {/* Sleep slider */}
-      <div className="mb-4">
-        <div className="flex justify-between mb-1">
-          <label className="font-mono text-xs text-muted">Sleep</label>
-          <span className="font-mono text-xs text-ink">{state.sleep}h</span>
-        </div>
-        <input
-          type="range"
-          min={0} max={9} step={0.5}
-          value={state.sleep}
-          onChange={e => setState(s => ({ ...s, sleep: +e.target.value }))}
-        />
-      </div>
+      {/* Sliders */}
+      <Slider
+        label="Energy"
+        value={state.energy}
+        min={1} max={10} step={1}
+        unit="/10"
+        accent="#93C5FD"
+        onChange={v => setState(s => ({ ...s, energy: v }))}
+      />
+      <Slider
+        label="Water"
+        value={state.water}
+        min={0} max={3} step={0.5}
+        unit="L"
+        accent="#86EFAC"
+        onChange={v => setState(s => ({ ...s, water: v }))}
+      />
+      <Slider
+        label="Sleep"
+        value={state.sleep}
+        min={0} max={10} step={0.5}
+        unit="h"
+        accent="#C4B5FD"
+        onChange={v => setState(s => ({ ...s, sleep: v }))}
+      />
 
       {/* Notes */}
       <input
         type="text"
-        placeholder="Any notes..."
+        className="cockpit-input"
+        placeholder="One-line note for today..."
         value={state.notes}
         onChange={e => setState(s => ({ ...s, notes: e.target.value }))}
-        className="w-full bg-transparent border border-border rounded-sm px-3 py-2 font-sans text-sm text-ink placeholder-muted mb-4 focus:outline-none focus:border-ink"
-        style={{ borderColor: 'var(--border)' }}
+        style={{ marginBottom: 18 }}
       />
 
       {/* Save */}
       <button
         onClick={handleSave}
         disabled={saving || saved}
-        className="w-full font-mono text-xs tracking-widest uppercase py-2.5 rounded-sm transition-all"
         style={{
-          background: saved ? 'var(--garden-green)' : 'var(--ink)',
-          color: 'var(--paper)',
-          opacity: saving ? 0.6 : 1,
+          width: '100%',
+          fontFamily: "'DM Mono', monospace",
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: '0.10em',
+          textTransform: 'uppercase',
+          padding: '12px 0',
+          border: 'none',
+          borderRadius: 8,
+          cursor: saving || saved ? 'not-allowed' : 'pointer',
+          background: saved ? '#166534' : 'var(--ink)',
+          color: saved ? '#86EFAC' : 'var(--paper)',
+          transition: 'background 0.2s, color 0.2s',
+          marginTop: 'auto',
         }}
       >
-        {saved ? 'Logged ✓' : saving ? 'Saving...' : 'Save Day Log'}
+        {saved ? '✓  Logged' : saving ? 'Saving...' : 'Save day log'}
       </button>
     </div>
   )

@@ -1,29 +1,45 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { Toggle } from '@/components/ui/Toggle'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 type PostType = 'BLOG' | 'POEM' | 'JOURNAL' | 'ESSAY' | 'CSR' | 'SPORTS' | 'FITNESS_REFLECTION'
 type PostStatus = 'DRAFT' | 'PUBLISHED'
 
 const postTypes: PostType[] = ['BLOG', 'POEM', 'JOURNAL', 'ESSAY', 'CSR', 'SPORTS', 'FITNESS_REFLECTION']
 
+const typeAccents: Record<PostType, string> = {
+  BLOG:               '#93C5FD',
+  POEM:               '#FCD34D',
+  JOURNAL:            '#86EFAC',
+  ESSAY:              '#C4B5FD',
+  CSR:                '#6EE7B7',
+  SPORTS:             '#FCA5A5',
+  FITNESS_REFLECTION: '#6EE7B7',
+}
+
 export default function WritePage() {
-  const router = useRouter()
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [type, setType] = useState<PostType>('JOURNAL')
-  const [status, setStatus] = useState<PostStatus>('DRAFT')
-  const [mood, setMood] = useState('')
-  const [tags, setTags] = useState('')
+  const router      = useRouter()
+  const searchParams = useSearchParams()
+  const contentRef  = useRef<HTMLTextAreaElement>(null)
+
+  const initialType = (searchParams.get('type') as PostType | null)
+  const [title,    setTitle]    = useState('')
+  const [content,  setContent]  = useState('')
+  const [type,     setType]     = useState<PostType>(
+    initialType && postTypes.includes(initialType) ? initialType : 'JOURNAL'
+  )
+  const [status,   setStatus]   = useState<PostStatus>('DRAFT')
+  const [mood,     setMood]     = useState('')
+  const [tags,     setTags]     = useState('')
   const [poemMode, setPoemMode] = useState(false)
-  const [postId, setPostId] = useState<string | null>(null)
-  const [saving, setSaving] = useState(false)
-  const [lastSaved, setLastSaved] = useState<string>('')
+  const [postId,   setPostId]   = useState<string | null>(null)
+  const [saving,   setSaving]   = useState(false)
+  const [lastSaved, setLastSaved] = useState('')
   const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length
+  const accent = typeAccents[type]
 
   const save = async (publish = false) => {
     setSaving(true)
@@ -35,7 +51,6 @@ export default function WritePage() {
       mood: mood || null,
       tags: tags.split(',').map(t => t.trim()).filter(Boolean),
     }
-
     try {
       if (postId) {
         await fetch('/api/posts', {
@@ -59,7 +74,6 @@ export default function WritePage() {
     }
   }
 
-  // Auto-save after 3s of inactivity
   useEffect(() => {
     if (!title && !content) return
     if (saveTimeout.current) clearTimeout(saveTimeout.current)
@@ -67,138 +81,246 @@ export default function WritePage() {
     return () => { if (saveTimeout.current) clearTimeout(saveTimeout.current) }
   }, [title, content, type, mood, tags])
 
-  // Poem mode switches type
   useEffect(() => {
     if (poemMode) setType('POEM')
   }, [poemMode])
 
+  // Auto-expand textarea
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.style.height = 'auto'
+      contentRef.current.style.height = contentRef.current.scrollHeight + 'px'
+    }
+  }, [content])
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--paper)' }}>
-      {/* Top bar */}
-      <div
-        className="sticky top-14 z-40 flex items-center gap-3 px-6 py-3 border-b"
-        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-      >
+    <div style={{ minHeight: '100vh', background: 'var(--paper)', display: 'flex', flexDirection: 'column' }}>
+
+      {/* ── Toolbar ───────────────────────────────────────────────── */}
+      <div style={{
+        position: 'sticky',
+        top: 52,
+        zIndex: 40,
+        background: 'var(--surface)',
+        borderBottom: '1px solid var(--border-solid)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '0 24px',
+        height: 48,
+      }}>
+        {/* Type accent dot */}
+        <div style={{ width: 8, height: 8, borderRadius: '50%', background: accent, flexShrink: 0 }} />
+
+        {/* Type select */}
         <select
           value={type}
           onChange={e => setType(e.target.value as PostType)}
-          className="font-mono text-xs bg-transparent border border-border rounded-sm px-2 py-1 focus:outline-none"
-          style={{ color: 'var(--ink)', borderColor: 'var(--border)' }}
+          className="write-select"
         >
           {postTypes.map(t => (
-            <option key={t} value={t}>{t.replace('_', ' ')}</option>
+            <option key={t} value={t}>{t.replace('_', ' ').toLowerCase()}</option>
           ))}
         </select>
 
+        {/* Status select */}
         <select
           value={status}
           onChange={e => setStatus(e.target.value as PostStatus)}
-          className="font-mono text-xs bg-transparent border border-border rounded-sm px-2 py-1 focus:outline-none"
-          style={{ color: 'var(--ink)', borderColor: 'var(--border)' }}
+          className="write-select"
         >
-          <option value="DRAFT">Draft</option>
-          <option value="PUBLISHED">Published</option>
+          <option value="DRAFT">draft</option>
+          <option value="PUBLISHED">published</option>
         </select>
 
-        <Toggle
-          checked={poemMode}
-          onChange={setPoemMode}
-          label="Poem mode"
-          size="sm"
-        />
+        {/* Poem mode toggle */}
+        <button
+          onClick={() => setPoemMode(p => !p)}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 10,
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            background: poemMode ? '#FCD34D18' : 'transparent',
+            border: `1px solid ${poemMode ? '#FCD34D50' : 'var(--border-solid)'}`,
+            borderRadius: 6,
+            padding: '5px 10px',
+            color: poemMode ? '#FCD34D' : 'var(--muted)',
+            cursor: 'pointer',
+            transition: 'all 0.15s',
+          }}
+        >
+          ✦ Poem
+        </button>
 
-        <div className="flex-1" />
+        <div style={{ flex: 1 }} />
 
-        {lastSaved && (
-          <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
-            {saving ? 'Saving...' : `Saved ${lastSaved}`}
+        {/* Save status */}
+        {(saving || lastSaved) && (
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'var(--muted)' }}>
+            {saving ? 'saving...' : `saved ${lastSaved}`}
           </span>
         )}
 
+        {/* Save button */}
         <button
           onClick={() => save()}
-          className="font-mono text-xs uppercase tracking-widest px-3 py-1.5 border rounded-sm"
-          style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 10,
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            background: 'transparent',
+            border: '1px solid var(--border-solid)',
+            borderRadius: 6,
+            padding: '5px 14px',
+            color: 'var(--muted)',
+            cursor: 'pointer',
+          }}
         >
           Save
         </button>
 
+        {/* Publish button */}
         <button
           onClick={() => save(true)}
-          className="font-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded-sm"
-          style={{ background: 'var(--ink)', color: 'var(--paper)' }}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 10,
+            fontWeight: 600,
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            background: accent,
+            border: 'none',
+            borderRadius: 6,
+            padding: '6px 14px',
+            color: '#0F0E0C',
+            cursor: 'pointer',
+          }}
         >
           Publish
         </button>
       </div>
 
-      {/* Editor */}
-      <div className={`flex-1 max-w-3xl mx-auto w-full px-6 py-10 ${poemMode ? 'text-center' : ''}`}>
+      {/* ── Editor ────────────────────────────────────────────────── */}
+      <div style={{
+        flex: 1,
+        maxWidth: poemMode ? 560 : 760,
+        margin: '0 auto',
+        width: '100%',
+        padding: '48px 32px 96px',
+        textAlign: poemMode ? 'center' : 'left',
+      }}>
         {/* Title */}
         <input
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
-          placeholder="Title"
-          className="w-full bg-transparent font-display text-4xl font-normal text-ink placeholder-border focus:outline-none mb-6"
+          placeholder="Untitled"
           style={{
-            fontSize: poemMode ? '2rem' : '2.5rem',
+            width: '100%',
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            fontFamily: "'Playfair Display', serif",
+            fontSize: poemMode ? '2rem' : '2.75rem',
+            fontWeight: 400,
+            color: 'var(--ink)',
+            lineHeight: 1.2,
+            marginBottom: 24,
             textAlign: poemMode ? 'center' : 'left',
           }}
         />
 
-        <div
-          className="w-8 h-px mb-8"
-          style={{
-            background: 'var(--border)',
-            margin: poemMode ? '0 auto 2rem' : '0 0 2rem',
-          }}
-        />
+        {/* Separator */}
+        <div style={{
+          width: 32,
+          height: 2,
+          background: accent,
+          borderRadius: 1,
+          marginBottom: 32,
+          opacity: 0.6,
+          marginLeft: poemMode ? 'auto' : 0,
+          marginRight: poemMode ? 'auto' : 0,
+        }} />
 
         {/* Body */}
         <textarea
+          ref={contentRef}
           value={content}
           onChange={e => setContent(e.target.value)}
           placeholder={poemMode ? 'Begin...' : 'Start writing...'}
-          className="w-full bg-transparent focus:outline-none resize-none"
           style={{
+            width: '100%',
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            resize: 'none',
             fontFamily: poemMode ? "'Playfair Display', serif" : "'DM Sans', sans-serif",
             fontStyle: poemMode ? 'italic' : 'normal',
             fontSize: poemMode ? '19px' : '18px',
-            lineHeight: poemMode ? 2 : 1.8,
+            lineHeight: poemMode ? 2.2 : 1.9,
             color: 'var(--ink)',
+            caretColor: accent,
             textAlign: poemMode ? 'center' : 'left',
-            minHeight: '400px',
+            minHeight: 400,
+            overflow: 'hidden',
           }}
           rows={20}
         />
 
         {/* Meta fields */}
-        <div className="mt-10 pt-6 border-t space-y-4" style={{ borderColor: 'var(--border)' }}>
+        <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid var(--border-solid)', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <input
             type="text"
             value={mood}
             onChange={e => setMood(e.target.value)}
-            placeholder="Mood (e.g. quiet and awake)"
-            className="w-full bg-transparent font-mono text-sm border-b pb-2 focus:outline-none"
-            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+            placeholder="Mood when writing (e.g. quiet and awake)"
+            style={{
+              background: 'transparent',
+              border: 'none',
+              borderBottom: '1px solid var(--border-solid)',
+              outline: 'none',
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 13,
+              color: 'var(--muted)',
+              padding: '8px 0',
+              width: '100%',
+            }}
           />
           <input
             type="text"
             value={tags}
             onChange={e => setTags(e.target.value)}
-            placeholder="Tags (comma-separated)"
-            className="w-full bg-transparent font-mono text-sm border-b pb-2 focus:outline-none"
-            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+            placeholder="Tags — comma separated"
+            style={{
+              background: 'transparent',
+              border: 'none',
+              borderBottom: '1px solid var(--border-solid)',
+              outline: 'none',
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 13,
+              color: 'var(--muted)',
+              padding: '8px 0',
+              width: '100%',
+            }}
           />
         </div>
       </div>
 
-      {/* Word count */}
-      <div
-        className="fixed bottom-6 right-6 font-mono text-xs"
-        style={{ color: 'var(--muted)' }}
-      >
+      {/* ── Word count ────────────────────────────────────────────── */}
+      <div style={{
+        position: 'fixed',
+        bottom: 20,
+        right: 24,
+        fontFamily: "'DM Mono', monospace",
+        fontSize: 11,
+        color: 'var(--muted)',
+        background: 'var(--surface)',
+        border: '1px solid var(--border-solid)',
+        borderRadius: 20,
+        padding: '4px 12px',
+      }}>
         {wordCount} words
       </div>
     </div>

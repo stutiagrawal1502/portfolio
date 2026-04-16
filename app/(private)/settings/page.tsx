@@ -1,89 +1,127 @@
 'use client'
 
-import { useSession, signOut } from 'next-auth/react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function SettingsPage() {
-  const { data: session } = useSession()
+  const router = useRouter()
+  const [email, setEmail] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.ok ? r.json() : null)
+      .then((d: { email: string } | null) => setEmail(d?.email ?? null))
+      .catch(() => {})
+  }, [])
+
+  async function handleSignOut() {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    router.push('/')
+  }
+
+  const navLinks = [
+    { href: '/dashboard',   label: 'Dashboard',       color: '#93C5FD' },
+    { href: '/write',       label: 'Write',            color: '#FCD34D' },
+    { href: '/planner',     label: 'Planner',          color: '#C4B5FD' },
+    { href: '/fitness-log', label: 'Fitness Log',      color: '#86EFAC' },
+    { href: '/health',      label: 'Health Tracker',   color: '#F9A8D4' },
+    { href: '/',            label: 'Public site →',    color: 'var(--muted)' },
+  ]
 
   return (
-    <main className="min-h-screen px-6 py-8 max-w-2xl mx-auto">
-      <h1 className="font-display text-3xl font-normal mb-8" style={{ color: 'var(--ink)' }}>
-        Settings
-      </h1>
+    <div style={{ padding: '28px 32px 64px', maxWidth: 600, margin: '0 auto' }}>
 
-      {/* Account */}
-      <section className="mb-10">
-        <h2 className="font-mono text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--muted)' }}>
-          Account
-        </h2>
-        <div
-          className="rounded-sm p-5 border space-y-3"
-          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-sans text-sm" style={{ color: 'var(--ink)' }}>
-                {session?.user?.name}
-              </p>
-              <p className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
-                {session?.user?.email}
-              </p>
+      {/* Header */}
+      <div style={{ marginBottom: 32 }}>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 8 }}>
+          Private
+        </span>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: 'var(--ink)', lineHeight: 1.2 }}>
+          Settings
+        </h1>
+      </div>
+
+      {/* Account card */}
+      <div className="cockpit-card" style={{ marginBottom: 20 }}>
+        <span className="cockpit-label">Account</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: 'var(--ink)', marginBottom: 4 }}>
+              Logged in as
             </div>
-            <button
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="font-mono text-xs uppercase tracking-widest px-3 py-1.5 border rounded-sm"
-              style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
-            >
-              Sign out
-            </button>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: 'var(--muted)' }}>
+              {email ?? '—'}
+            </div>
           </div>
+          <button
+            onClick={handleSignOut}
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 10,
+              letterSpacing: '0.10em',
+              textTransform: 'uppercase',
+              background: 'transparent',
+              border: '1px solid var(--border-solid)',
+              borderRadius: 7,
+              padding: '8px 16px',
+              color: 'var(--muted)',
+              cursor: 'pointer',
+              transition: 'all 0.15s',
+            }}
+          >
+            Sign out
+          </button>
         </div>
-      </section>
+      </div>
 
-      {/* Journey */}
-      <section className="mb-10">
-        <h2 className="font-mono text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--muted)' }}>
-          Journey
-        </h2>
-        <div
-          className="rounded-sm p-5 border"
-          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-        >
-          <p className="font-sans text-sm mb-3" style={{ color: 'var(--ink)' }}>
-            Journey start date and configuration is managed via the seed file.
-          </p>
-          <p className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
-            Start date: 2026-04-20 · 180 days total
-          </p>
-        </div>
-      </section>
-
-      {/* Navigation */}
-      <section>
-        <h2 className="font-mono text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--muted)' }}>
-          Quick Links
-        </h2>
-        <div className="space-y-2">
+      {/* Journey card */}
+      <div className="cockpit-card" style={{ marginBottom: 20 }}>
+        <span className="cockpit-label">Journey config</span>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           {[
-            { href: '/dashboard', label: 'Dashboard' },
-            { href: '/write', label: 'Write' },
-            { href: '/planner', label: 'Planner' },
-            { href: '/fitness-log', label: 'Fitness Log' },
-            { href: '/health', label: 'Health Tracker' },
-            { href: '/', label: 'Public Site →' },
-          ].map(link => (
+            { label: 'Start date', value: '2026-04-20' },
+            { label: 'Duration',   value: '180 days'   },
+            { label: 'Goal',       value: '180-day journey' },
+          ].map(item => (
+            <div key={item.label} style={{ flex: 1, minWidth: 120 }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 4 }}>
+                {item.label}
+              </div>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--ink)' }}>
+                {item.value}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Nav links card */}
+      <div className="cockpit-card">
+        <span className="cockpit-label">Quick navigation</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {navLinks.map(link => (
             <Link
               key={link.href}
               href={link.href}
-              className="block font-mono text-sm py-2 border-b"
-              style={{ borderColor: 'var(--border)', color: 'var(--ink)' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '10px 0',
+                borderBottom: '1px solid var(--border-solid)',
+                textDecoration: 'none',
+                color: 'var(--ink)',
+              }}
             >
-              {link.label}
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: link.color, flexShrink: 0 }} />
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: 'var(--ink)' }}>
+                {link.label}
+              </span>
             </Link>
           ))}
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   )
 }

@@ -1,6 +1,5 @@
+import { getSession } from '@/lib/auth-simple'
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
@@ -10,7 +9,7 @@ export async function GET(req: NextRequest) {
   const startDate = searchParams.get('startDate')
   const endDate = searchParams.get('endDate')
 
-  const session = await getServerSession(authOptions)
+  const session = await getSession()
   if (!session && !isPublicOnly) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -33,7 +32,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()

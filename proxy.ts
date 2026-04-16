@@ -1,13 +1,20 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+import { COOKIE_AUTH, COOKIE_EMAIL, ALLOWED_EMAILS } from '@/lib/auth-simple'
 
-export async function proxy(request: NextRequest) {
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
+export function proxy(request: NextRequest) {
+  const auth  = request.cookies.get(COOKIE_AUTH)?.value
+  const email = request.cookies.get(COOKIE_EMAIL)?.value
 
-  if (!token) {
-    const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname)
+  const authed =
+    auth === 'true' &&
+    !!email &&
+    ALLOWED_EMAILS.includes(email.trim().toLowerCase())
+
+  if (!authed) {
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = '/login'
+    loginUrl.searchParams.set('from', request.nextUrl.pathname)
     return NextResponse.redirect(loginUrl)
   }
 

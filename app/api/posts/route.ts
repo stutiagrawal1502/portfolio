@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { getSession } from '@/lib/auth-simple'
 import { prisma } from '@/lib/prisma'
 import { generateSlug } from '@/lib/utils'
 import type { PostStatus, PostType } from '@/app/generated/prisma/client'
@@ -13,7 +12,7 @@ export async function GET(req: NextRequest) {
   const limit = parseInt(searchParams.get('limit') ?? '50')
 
   // Private posts require auth
-  const session = await getServerSession(authOptions)
+  const session = await getSession()
   const isAuthed = !!session
 
   const where: Record<string, unknown> = {}
@@ -38,7 +37,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
@@ -67,7 +66,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
@@ -89,7 +88,7 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()

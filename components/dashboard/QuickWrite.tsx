@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation'
 
 type WriteType = 'POEM' | 'JOURNAL' | 'BLOG'
 
+const typeColors: Record<WriteType, string> = {
+  POEM:    '#FCD34D',
+  JOURNAL: '#86EFAC',
+  BLOG:    '#93C5FD',
+}
+
 export function QuickWrite() {
   const [text, setText] = useState('')
   const [saving, setSaving] = useState<WriteType | null>(null)
@@ -31,55 +37,66 @@ export function QuickWrite() {
     }
   }
 
+  const wordCount = text.trim().split(/\s+/).filter(Boolean).length
+
   return (
-    <div
-      className="rounded-sm p-5 border"
-      style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-    >
-      <p
-        className="font-mono text-xs tracking-widest uppercase mb-3"
-        style={{ color: 'var(--muted)' }}
-      >
-        Quick Write
-      </p>
+    <div className="cockpit-card">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <span className="cockpit-label" style={{ margin: 0 }}>Quick write</span>
+        {text.length > 0 && (
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'var(--muted)' }}>
+            {wordCount}w
+          </span>
+        )}
+      </div>
 
       <textarea
         value={text}
         onChange={e => setText(e.target.value)}
         placeholder="What's on your mind right now?"
-        rows={5}
-        className="w-full bg-transparent font-sans text-sm resize-none focus:outline-none mb-3"
+        rows={4}
         style={{
+          width: '100%',
+          background: 'transparent',
+          border: 'none',
+          outline: 'none',
+          resize: 'none',
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: 14,
+          lineHeight: 1.7,
           color: 'var(--ink)',
           caretColor: 'var(--ink)',
-          lineHeight: 1.7,
+          marginBottom: 14,
         }}
       />
 
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2">
-          {(['POEM', 'JOURNAL', 'BLOG'] as WriteType[]).map(type => (
-            <button
-              key={type}
-              onClick={() => handleSave(type)}
-              disabled={!text.trim() || !!saving}
-              className="font-mono text-xs tracking-widest uppercase px-3 py-1.5 rounded-sm border transition-all"
-              style={{
-                borderColor: 'var(--border)',
-                color: saving === type ? 'var(--paper)' : 'var(--muted)',
-                background: saving === type ? 'var(--ink)' : 'transparent',
-                opacity: !text.trim() ? 0.4 : 1,
-              }}
-            >
-              {saving === type ? '...' : type.toLowerCase()}
-            </button>
-          ))}
-        </div>
-        {text.length > 0 && (
-          <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
-            {text.split(/\s+/).filter(Boolean).length} words
-          </span>
-        )}
+      {/* Type buttons */}
+      <div style={{ display: 'flex', gap: 6 }}>
+        {(['POEM', 'JOURNAL', 'BLOG'] as WriteType[]).map(type => (
+          <button
+            key={type}
+            onClick={() => handleSave(type)}
+            disabled={!text.trim() || !!saving}
+            style={{
+              flex: 1,
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 10,
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              border: `1px solid ${typeColors[type]}30`,
+              borderRadius: 6,
+              padding: '7px 0',
+              cursor: !text.trim() || !!saving ? 'not-allowed' : 'pointer',
+              background: saving === type ? typeColors[type] : `${typeColors[type]}12`,
+              color: saving === type ? '#0F0E0C' : typeColors[type],
+              opacity: !text.trim() ? 0.35 : 1,
+              transition: 'all 0.15s',
+            }}
+          >
+            {saving === type ? '...' : type.toLowerCase()}
+          </button>
+        ))}
       </div>
     </div>
   )

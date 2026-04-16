@@ -1,19 +1,14 @@
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getDayNumber, getStreak } from '@/lib/journey'
-import { DayCounter } from '@/components/dashboard/DayCounter'
-import { StreakBar } from '@/components/dashboard/StreakBar'
 import { QuickLog } from '@/components/dashboard/QuickLog'
 import { ContentQueue } from '@/components/dashboard/ContentQueue'
 import { WeekCalendar } from '@/components/dashboard/WeekCalendar'
 import { QuickWrite } from '@/components/dashboard/QuickWrite'
 import { HealthSnapshot } from '@/components/dashboard/HealthSnapshot'
+import { StreakBar } from '@/components/dashboard/StreakBar'
 import { LiveClock } from './LiveClock'
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions)
-
   const [config, recentDays, postsCount] = await Promise.all([
     prisma.journeyConfig.findUnique({ where: { id: 'singleton' } }),
     prisma.fitnessDay.findMany({
@@ -31,71 +26,78 @@ export default async function DashboardPage() {
   )
   const avgEnergy = energyDays.length
     ? energyDays.reduce((sum, d) => sum + d.energyBefore, 0) / energyDays.length
-    : 0
+    : null
 
-  const firstName = session?.user?.name?.split(' ')[0] ?? 'Stuti'
+  const stats = [
+    { label: 'Day',    value: dayNumber,                    suffix: '/180', color: '#93C5FD' },
+    { label: 'Streak', value: streak,                        suffix: ' days', color: '#86EFAC' },
+    { label: 'Posts',  value: postsCount,                    suffix: ' live',  color: '#FCD34D' },
+    { label: 'Energy', value: avgEnergy ? avgEnergy.toFixed(1) : '—', suffix: avgEnergy ? '/10' : '', color: '#F9A8D4' },
+  ]
 
   return (
-    <main className="min-h-screen px-6 py-8 max-w-6xl mx-auto">
-      {/* Greeting */}
-      <div className="mb-8">
-        <h1 className="font-mono text-lg" style={{ color: 'var(--ink)' }}>
-          Good morning, {firstName}. Day {dayNumber}.
-        </h1>
-        <LiveClock />
-      </div>
+    <div style={{ padding: '28px 32px 48px', maxWidth: 1280, margin: '0 auto' }}>
 
-      {/* Stats row */}
-      <div
-        className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 p-4 rounded-sm border"
-        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-      >
-        {[
-          { label: 'Days', value: `${dayNumber}/180` },
-          { label: 'Streak', value: `${streak} days` },
-          { label: 'Posts', value: `${postsCount} posted` },
-          { label: 'Energy', value: avgEnergy ? `${avgEnergy.toFixed(1)}/10` : '—' },
-        ].map(stat => (
-          <div key={stat.label} className="text-center">
-            <p className="font-mono text-xs tracking-widest uppercase mb-1" style={{ color: 'var(--muted)' }}>
-              {stat.label}
-            </p>
-            <p className="font-mono text-lg font-light" style={{ color: 'var(--ink)' }}>
-              {stat.value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Week calendar */}
-      <div className="mb-6">
-        <WeekCalendar days={recentDays.map((d: { date: Date; worked: boolean; energyBefore: number | null }) => ({ date: d.date, worked: d.worked }))} />
-      </div>
-
-      {/* Main dashboard grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Left column */}
-        <div className="flex flex-col gap-6">
-          <DayCounter dayNumber={dayNumber} />
-          <StreakBar
-            streak={streak}
-            longestStreak={config?.longestStreak ?? 0}
-            recentDays={recentDays}
-          />
+      {/* ── Top bar: greeting + stats ──────────────────────────────── */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 24 }}>
+        {/* Greeting */}
+        <div>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 8 }}>
+            Private dashboard
+          </span>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: 'var(--ink)', marginBottom: 4, lineHeight: 1.2 }}>
+            Good morning, Stuti.
+          </h1>
+          <LiveClock />
         </div>
 
-        {/* Middle column */}
-        <div className="flex flex-col gap-6">
-          <QuickLog />
-          <HealthSnapshot recentEnergy={recentDays} />
+        {/* Stat blocks */}
+        <div style={{ display: 'flex', gap: 8 }}>
+          {stats.map(s => (
+            <div key={s.label} className="cockpit-stat-block">
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>
+                {s.label}
+              </div>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 22, fontWeight: 600, color: s.color, lineHeight: 1, letterSpacing: '-0.01em' }}>
+                {s.value}
+                <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--muted)', marginLeft: 1 }}>
+                  {s.suffix}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
+      </div>
 
-        {/* Right column */}
-        <div className="flex flex-col gap-6 md:col-span-2 lg:col-span-1">
+      {/* ── Week calendar ──────────────────────────────────────────── */}
+      <div className="cockpit-card" style={{ marginBottom: 16 }}>
+        <span className="cockpit-label">This week</span>
+        <WeekCalendar
+          days={recentDays.map((d: { date: Date; worked: boolean; energyBefore: number | null }) => ({
+            date: d.date,
+            worked: d.worked,
+          }))}
+        />
+      </div>
+
+      {/* ── Main 2-col grid ────────────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+        <QuickLog />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <QuickWrite />
           <ContentQueue />
         </div>
       </div>
-    </main>
+
+      {/* ── Bottom strip ───────────────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <StreakBar
+          streak={streak}
+          longestStreak={config?.longestStreak ?? 0}
+          recentDays={recentDays}
+        />
+        <HealthSnapshot recentEnergy={recentDays} />
+      </div>
+    </div>
   )
 }
