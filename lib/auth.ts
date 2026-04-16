@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 
 // Support comma-separated list of allowed emails, e.g. "a@b.com,c@d.com"
 const ALLOWED_EMAILS: string[] = (
-  process.env.ALLOWED_EMAIL ?? 'stutiagrawal1402@gmail.com'
+  process.env.ALLOWED_EMAIL ?? "stutiagrawal1402@gmail.com,himanshushourabh@gmail.com"
 )
   .split(',')
   .map(e => e.trim())
