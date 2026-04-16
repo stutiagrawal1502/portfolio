@@ -26,8 +26,8 @@ export default async function FitnessPage() {
   const progressPct = Math.min(100, (dayNumber / 180) * 100)
 
   return (
-    <main className="min-h-screen pt-28 pb-32 px-6">
-      <div className="max-w-2xl mx-auto">
+    <main style={{ padding: '40px 24px 96px' }}>
+      <div style={{ maxWidth: 640, margin: '0 auto' }}>
 
         {/* Stats bar */}
         <div className="mb-12">

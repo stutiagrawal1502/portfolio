@@ -1,64 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
 /* ─── Tailwind v4 Theme ───────────────────────────────────────────────── */
 @theme {
-  --color-ink:          #1A1714;
-  --color-paper:        #F7F3EE;
-  --color-dawn-blue:    #2B4C7E;
-  --color-dawn-rose:    #C4735A;
-  --color-garden-green: #3D6B4F;
-  --color-poem-gold:    #B8860B;
-  --color-surface:      #F0EBE3;
-  --color-border:       #D9D0C4;
-  --color-muted:        #8A7F74;
+  --color-ink:          #111111;
+  --color-paper:        #F8F4EE;
+  --color-dawn-blue:    #2563EB;
+  --color-dawn-rose:    #DC4A2A;
+  --color-garden-green: #16A34A;
+  --color-poem-gold:    #B45309;
+  --color-surface:      #FFFFFF;
+  --color-muted:        #6B7280;
 
   --font-display: 'Playfair Display', serif;
   --font-mono:    'DM Mono', monospace;
   --font-sans:    'DM Sans', sans-serif;
-
-  --animate-fade-up:  fadeUp 0.6s ease forwards;
-  --animate-slide-up: slideUp 0.5s ease forwards;
 }
 
-/* ─── CSS Variable System ─────────────────────────────────────────────── */
+/* ─── Design Tokens ───────────────────────────────────────────────────── */
 :root {
-  /* Dawn sky — the 5am palette */
-  --ink:          #1A1714;
-  --paper:        #F7F3EE;
-  --dawn-blue:    #2B4C7E;
-  --dawn-rose:    #C4735A;
-  --garden-green: #3D6B4F;
-  --poem-gold:    #B8860B;
+  --ink:          #111111;
+  --paper:        #F8F4EE;
+  --surface:      #FFFFFF;
+  --border:       rgba(0,0,0,0.07);
+  --border-solid: #E2E0DB;
+  --muted:        #6B7280;
 
-  /* Functional */
-  --surface:      #F0EBE3;
-  --border:       #D9D0C4;
-  --muted:        #8A7F74;
-  --white:        #FFFFFF;
+  --dawn-blue:    #2563EB;
+  --dawn-rose:    #DC4A2A;
+  --garden-green: #16A34A;
+  --poem-gold:    #B45309;
 
-  /* Mode-specific */
-  --work-accent:  #2B4C7E;
-  --life-accent:  #C4735A;
+  --work-accent:  var(--dawn-blue);
+  --life-accent:  var(--garden-green);
   --current-accent: var(--work-accent);
+
+  /* Hero tokens */
+  --hero-bg:      #0A0A0F;
 }
 
-/* Dark mode — private dashboard */
 [data-theme="dark"] {
-  --ink:     #F7F3EE;
-  --paper:   #1A1714;
-  --surface: #242019;
-  --border:  #3A352E;
-  --muted:   #7A7068;
+  --ink:          #F0ECE4;
+  --paper:        #0F0E0C;
+  --surface:      #1A1917;
+  --border:       rgba(255,255,255,0.07);
+  --border-solid: #282622;
+  --muted:        #78716C;
 }
 
-/* ─── Base Styles ─────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+[data-mode="work"] { --current-accent: var(--work-accent); }
+[data-mode="life"] { --current-accent: var(--life-accent); }
+
+/* ─── Reset ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
@@ -72,241 +67,237 @@ body {
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ─── Typography Helpers ──────────────────────────────────────────────── */
-.font-display { font-family: 'Playfair Display', serif; }
-.font-mono-dm { font-family: 'DM Mono', monospace; }
-.font-sans-dm { font-family: 'DM Sans', sans-serif; }
-
-/* ─── Paper Texture ───────────────────────────────────────────────────── */
-.paper-texture {
-  background-color: var(--paper);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-}
-
-.poem-bg {
-  background-color: var(--paper);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
-}
-
-/* ─── The Toggle ──────────────────────────────────────────────────────── */
-.toggle-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.toggle-track {
-  width: 160px;
-  height: 48px;
-  border-radius: 24px;
-  background: var(--ink);
+/* ─── The WORK / LIFE Toggle ──────────────────────────────────────────── */
+/*
+  Layout: two equal-width buttons side by side.
+  A white pill sits behind the active button and
+  slides horizontally via Framer Motion translateX.
+*/
+.toggle-shell {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
   position: relative;
-  border: 2px solid var(--border);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  flex-shrink: 0;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 16px;
+  padding: 5px;
+  gap: 0;
+  /* glass effect on the dark hero */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.toggle-track.life {
-  border-color: var(--dawn-rose);
-  box-shadow: 0 0 20px rgba(196, 115, 90, 0.15);
-}
-
-.toggle-track.work {
-  border-color: var(--dawn-blue);
-  box-shadow: 0 0 20px rgba(43, 76, 126, 0.15);
-}
-
-.toggle-puck {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--paper);
+/* The sliding white pill — absolutely fills one half-cell */
+.toggle-pill {
   position: absolute;
-  top: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  top: 5px;
+  left: 5px;
+  /* Exactly half the shell width minus the padding on each side */
+  width: calc(50% - 5px);
+  height: calc(100% - 10px);
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.10);
+  pointer-events: none;
 }
 
 .toggle-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  color: var(--muted);
-  transition: color 0.3s ease;
-  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 11px 36px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: transparent;
+  color: rgba(250,250,249,0.40);
+  transition: color 0.15s ease;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .toggle-label.active {
-  color: var(--ink);
+  color: #111111;
+}
+
+.toggle-label:not(.active):hover {
+  color: rgba(250,250,249,0.80);
+}
+
+/* ─── Navigation ──────────────────────────────────────────────────────── */
+.nav-hero {
+  background: transparent;
+}
+
+.nav-light {
+  background: var(--paper);
+  border-bottom: 1px solid var(--border-solid);
+}
+
+.nav-scrolled {
+  background: rgba(10,10,15,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ─── Cards ───────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-solid);
+  border-radius: 14px;
+  padding: 24px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  height: 100%;
+}
+
+.card:hover {
+  box-shadow: 0 6px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  transform: translateY(-2px);
+}
+
+.card-featured {
+  background: var(--surface);
+  border: 1px solid var(--border-solid);
+  border-radius: 14px;
+  padding: 32px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  height: 100%;
+}
+
+.card-featured:hover {
+  box-shadow: 0 8px 48px rgba(0,0,0,0.09), 0 2px 6px rgba(0,0,0,0.04);
+  transform: translateY(-2px);
+}
+
+/* Accent left-border variants for featured cards */
+.card-accent-blue  { border-left: 3px solid var(--dawn-blue);    }
+.card-accent-green { border-left: 3px solid var(--garden-green); }
+.card-accent-rose  { border-left: 3px solid var(--dawn-rose);    }
+.card-accent-gold  { border-left: 3px solid var(--poem-gold);    }
+
+/* ─── Type badges ─────────────────────────────────────────────────────── */
+.type-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
   font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  line-height: 1.4;
 }
 
-[data-theme="dark"] .toggle-label.active {
-  color: var(--ink);
+.type-badge-poem     { background: #FEF3C7; color: #92400E; }
+.type-badge-blog     { background: #DBEAFE; color: #1D4ED8; }
+.type-badge-journal  { background: #F3F4F6; color: #4B5563; }
+.type-badge-csr      { background: #D1FAE5; color: #065F46; }
+.type-badge-sports   { background: #FEE2E2; color: #B91C1C; }
+.type-badge-essay    { background: #EDE9FE; color: #5B21B6; }
+.type-badge-fitness  { background: #D1FAE5; color: #065F46; }
+
+/* ─── Mood tag ────────────────────────────────────────────────────────── */
+.mood-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  background: #F1EFE9;
+  padding: 3px 9px;
+  border-radius: 20px;
+  display: inline-block;
+  letter-spacing: 0.04em;
 }
 
-/* ─── Mode-based accent transitions ──────────────────────────────────── */
-[data-mode="work"] {
-  --current-accent: var(--work-accent);
+/* ─── Section label (eyebrow above heading) ───────────────────────────── */
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 8px;
 }
 
-[data-mode="life"] {
-  --current-accent: var(--life-accent);
-}
-
-/* ─── Dawn Background Animation ──────────────────────────────────────── */
-@keyframes dawnShift {
-  0%   { background-position: 50% 0%; }
-  50%  { background-position: 50% 10%; }
-  100% { background-position: 50% 0%; }
-}
-
-@keyframes starFade {
-  0%   { opacity: 0.4; }
-  50%  { opacity: 0.15; }
-  100% { opacity: 0.4; }
-}
-
-/* ─── Page Animation Keyframes ────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-/* ─── Progress Bar — hand-drawn feel ─────────────────────────────────── */
+/* ─── Progress bar ────────────────────────────────────────────────────── */
 .progress-bar-track {
-  background: var(--border);
-  height: 12px;
-  clip-path: polygon(0 20%, 1% 0, 99% 5%, 100% 0, 100% 80%, 99% 100%, 1% 95%, 0 100%);
-  border-radius: 2px;
+  background: #E5E0D8;
+  height: 5px;
+  border-radius: 99px;
   overflow: hidden;
+  width: 100%;
 }
 
 .progress-bar-fill {
   height: 100%;
-  background: var(--garden-green);
-  transition: width 1.2s ease;
+  background: var(--current-accent);
+  border-radius: 99px;
+  transition: width 1s ease;
 }
 
-/* ─── Stamp / Filter Pills ────────────────────────────────────────────── */
+/* ─── Filter pills (Expressions page) ────────────────────────────────── */
 .stamp-pill {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 2px solid var(--ink);
-  padding: 4px 10px;
-  border-radius: 2px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--border-solid);
   cursor: pointer;
-  transition: all 0.2s ease;
-  transform: rotate(-0.5deg);
-  display: inline-block;
-  color: var(--ink);
+  transition: all 0.15s ease;
   background: transparent;
+  color: var(--muted);
 }
 
 .stamp-pill:hover {
-  background: var(--surface);
-  transform: rotate(0deg);
+  border-color: var(--ink);
+  color: var(--ink);
 }
 
 .stamp-pill.active {
   background: var(--ink);
+  border-color: var(--ink);
   color: var(--paper);
-  transform: rotate(0deg);
 }
 
-/* ─── Card Component ──────────────────────────────────────────────────── */
-.dawn-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 24px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+/* ─── Poem / prose pages ──────────────────────────────────────────────── */
+.paper-texture { background-color: var(--paper); }
+.poem-bg       { background-color: var(--paper); }
 
-.dawn-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(26, 23, 20, 0.08);
-}
-
-/* ─── Type Badges ─────────────────────────────────────────────────────── */
-.type-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 2px;
-  display: inline-block;
-}
-
-.type-badge-poem     { background: rgba(184, 134, 11, 0.12);  color: var(--poem-gold); }
-.type-badge-blog     { background: rgba(43, 76, 126, 0.12);   color: var(--dawn-blue); }
-.type-badge-journal  { background: rgba(138, 127, 116, 0.15); color: var(--muted); }
-.type-badge-csr      { background: rgba(61, 107, 79, 0.12);   color: var(--garden-green); }
-.type-badge-sports   { background: rgba(196, 115, 90, 0.12);  color: var(--dawn-rose); }
-.type-badge-essay    { background: rgba(26, 23, 20, 0.08);    color: var(--ink); }
-.type-badge-fitness  { background: rgba(61, 107, 79, 0.12);   color: var(--garden-green); }
-
-/* ─── Mood Tag ────────────────────────────────────────────────────────── */
-.mood-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  background: rgba(138, 127, 116, 0.1);
-  padding: 2px 8px;
-  border-radius: 20px;
-  display: inline-block;
-}
-
-/* ─── Poem Page ───────────────────────────────────────────────────────── */
 .poem-body {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 19px;
-  line-height: 2;
+  font-size: 20px;
+  line-height: 2.1;
   color: var(--ink);
   white-space: pre-wrap;
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
-/* ─── Prose content ───────────────────────────────────────────────────── */
+/* ─── Prose (post body) ───────────────────────────────────────────────── */
 .prose-dawn {
   font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  line-height: 1.8;
+  font-size: 17px;
+  line-height: 1.85;
   color: var(--ink);
-  max-width: 680px;
 }
 
-.prose-dawn h1,
-.prose-dawn h2,
-.prose-dawn h3 {
+.prose-dawn h1, .prose-dawn h2, .prose-dawn h3 {
   font-family: 'Playfair Display', serif;
   margin-top: 2em;
   margin-bottom: 0.5em;
 }
 
 .prose-dawn p { margin-bottom: 1.4em; }
+.prose-dawn p:last-child { margin-bottom: 0; }
 
 .prose-dawn blockquote {
   border-left: 3px solid var(--poem-gold);
@@ -319,84 +310,83 @@ body {
 .prose-dawn code {
   font-family: 'DM Mono', monospace;
   font-size: 0.9em;
-  background: var(--surface);
+  background: #F1EFE9;
   padding: 2px 6px;
   border-radius: 3px;
 }
 
-/* ─── Milestone stamps ────────────────────────────────────────────────── */
+/* ─── Milestone stamp (fitness page) ─────────────────────────────────── */
 .milestone-stamp {
-  transform: rotate(-1deg);
-  border: 2px solid var(--poem-gold);
   display: inline-block;
-  padding: 12px 20px;
+  padding: 10px 20px;
+  border: 1px solid var(--poem-gold);
+  border-radius: 6px;
   font-family: 'DM Mono', monospace;
   color: var(--poem-gold);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-size: 13px;
+  font-size: 11px;
+  background: #FFFBEB;
 }
 
-/* ─── Nav ─────────────────────────────────────────────────────────────── */
-.nav-transparent {
-  background: transparent;
-  backdrop-filter: none;
+/* ─── Dashboard dark cards ────────────────────────────────────────────── */
+.dawn-card {
+  background: var(--surface);
+  border: 1px solid var(--border-solid);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.nav-filled {
-  background: rgba(240, 235, 227, 0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+.dawn-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  transform: translateY(-2px);
 }
 
-[data-theme="dark"] .nav-filled {
-  background: rgba(36, 32, 25, 0.92);
+[data-theme="dark"] .dawn-card {
+  background: var(--surface);
+  border-color: var(--border-solid);
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────── */
+@keyframes starFade {
+  0%, 100% { opacity: 0.55; }
+  50%       { opacity: 0.20; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Scrollbar ───────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar-thumb { background: #C9C5BE; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9C9790; }
 
 /* ─── Selection ───────────────────────────────────────────────────────── */
-::selection {
-  background: rgba(43, 76, 126, 0.2);
-  color: var(--ink);
-}
+::selection { background: rgba(37,99,235,0.12); color: var(--ink); }
 
-/* ─── Focus styles ────────────────────────────────────────────────────── */
+/* ─── Focus ───────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--dawn-blue);
+  outline: 2px solid var(--current-accent);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-/* ─── Range inputs ────────────────────────────────────────────────────── */
+/* ─── Range inputs (dashboard) ───────────────────────────────────────── */
 input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  outline: none;
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px;
+  background: #E2E0DB; border-radius: 2px; outline: none;
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--ink);
-  cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--ink); cursor: pointer;
   transition: transform 0.15s ease;
 }
 
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }

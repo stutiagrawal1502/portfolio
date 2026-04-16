@@ -57,7 +57,7 @@ export default async function PostPage({
   const typeLabel = post.type.replace('_', ' ').toLowerCase()
 
   return (
-    <main className="min-h-screen pt-24 pb-32 px-6">
+    <main style={{ padding: '40px 24px 96px' }}>
       {/* Type accent line */}
       <div
         className="fixed top-0 left-0 right-0 h-1 z-50"

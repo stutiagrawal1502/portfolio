@@ -45,21 +45,24 @@ export default function ExpressionsPage() {
   }, [activeFilter])
 
   return (
-    <main className="min-h-screen pt-28 pb-24 px-6">
-      <div className="max-w-5xl mx-auto">
+    <main style={{ padding: '40px 24px 96px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="font-display text-4xl md:text-5xl font-normal text-ink mb-3">
+        <div style={{ marginBottom: 48, borderBottom: '1px solid var(--border-solid)', paddingBottom: 32 }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 10 }}>
+            All writing
+          </span>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', fontWeight: 400, color: 'var(--ink)', lineHeight: 1.1, marginBottom: 12 }}>
             Expressions
           </h1>
-          <p className="font-sans text-muted max-w-lg">
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: 'var(--muted)', maxWidth: 480 }}>
             Journal entries, essays, poems, and everything in between. Unfiltered, honest, mine.
           </p>
         </div>
 
         {/* Filter pills */}
-        <div className="flex flex-wrap gap-2 mb-12">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
           {filters.map(f => (
             <button
               key={f.value}

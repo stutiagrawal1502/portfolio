@@ -64,67 +64,89 @@ or a consultant who also writes poetry and can't decide which to be — this sit
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen pt-28 pb-32 px-6">
-      <div className="max-w-2xl mx-auto">
+    <main style={{ padding: '40px 24px 96px' }}>
+      <div style={{ maxWidth: 680, margin: '0 auto' }}>
 
-        {/* Header */}
-        <div className="mb-16">
-          <h1 className="font-display text-5xl font-normal text-ink mb-3">
+        {/* Hero header */}
+        <div style={{ marginBottom: 64, paddingBottom: 40, borderBottom: '1px solid var(--border-solid)' }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 14 }}>
+            About
+          </span>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 400, color: 'var(--ink)', lineHeight: 1.08, marginBottom: 20 }}>
             Stuti Agrawal
           </h1>
-          <p className="font-mono text-sm text-muted tracking-wide">
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--muted)', letterSpacing: '0.05em' }}>
             Consultant · Poet · Athlete · Figuring it out.
           </p>
+
+          {/* Quick-bio tags */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 24 }}>
+            {['EY Risk Advisory', '3 Years', 'Mumbai', 'Internal Controls', 'Building in public'].map(tag => (
+              <span
+                key={tag}
+                style={{
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: 11,
+                  color: 'var(--muted)',
+                  border: '1px solid var(--border-solid)',
+                  borderRadius: 4,
+                  padding: '3px 10px',
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Sections */}
-        <div className="space-y-16">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 56 }}>
           {sections.map(section => (
-            <section key={section.number} className="flex gap-8">
+            <section key={section.number} style={{ display: 'flex', gap: 32 }}>
               {/* Chapter number */}
-              <div className="font-mono text-sm text-muted w-8 flex-shrink-0 pt-1">
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: 'var(--muted)', width: 36, flexShrink: 0, paddingTop: 4, opacity: 0.6 }}>
                 [{section.number}]
               </div>
 
-              <div className="flex-1">
-                <h2 className="font-display text-2xl font-normal text-ink mb-4">
+              <div style={{ flex: 1 }}>
+                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 400, color: 'var(--ink)', marginBottom: 16 }}>
                   {section.title}
                 </h2>
 
                 {section.number === '06' ? (
-                  <div className="space-y-3">
-                    <p className="font-sans text-muted leading-relaxed mb-6">
-                      I'm not hard to find. I'm not easy to know. Start here.
+                  <div>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 24 }}>
+                      I&apos;m not hard to find. I&apos;m not easy to know. Start here.
                     </p>
-                    <div className="flex flex-col gap-3">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                       <Link
                         href="https://linkedin.com/in/stutiagrawal"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-mono text-sm text-dawn-blue hover:underline flex items-center gap-2"
+                        style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--dawn-blue)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}
                       >
-                        <span className="text-muted">↗</span> LinkedIn
+                        <span style={{ color: 'var(--muted)' }}>↗</span> LinkedIn
                       </Link>
                       <Link
                         href="https://instagram.com/stutiagrawal"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-mono text-sm text-dawn-rose hover:underline flex items-center gap-2"
+                        style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--dawn-rose)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}
                       >
-                        <span className="text-muted">↗</span> Instagram
+                        <span style={{ color: 'var(--muted)' }}>↗</span> Instagram
                       </Link>
                       <Link
                         href="mailto:stutiagrawal1402@gmail.com"
-                        className="font-mono text-sm text-muted hover:text-ink transition-colors flex items-center gap-2"
+                        style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}
                       >
-                        <span className="text-muted">→</span> stutiagrawal1402@gmail.com
+                        <span>→</span> stutiagrawal1402@gmail.com
                       </Link>
                     </div>
                   </div>
                 ) : (
-                  <div className="prose-dawn">
+                  <div>
                     {section.content.split('\n\n').map((para, i) => (
-                      <p key={i} className="mb-4 last:mb-0">
+                      <p key={i} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: 'var(--ink)', lineHeight: 1.85, marginBottom: i < section.content.split('\n\n').length - 1 ? 16 : 0 }}>
                         {para.trim()}
                       </p>
                     ))}

@@ -22,8 +22,8 @@ const timeline = [
 
 export default function SportsPage() {
   return (
-    <main className="min-h-screen pt-28 pb-32 px-6">
-      <div className="max-w-3xl mx-auto">
+    <main style={{ padding: '40px 24px 96px' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto' }}>
 
         {/* Pull quote */}
         <blockquote className="mb-16 max-w-2xl">

@@ -20,54 +20,53 @@ export function TheToggle({ onChange }: TheToggleProps) {
     setMode(initial)
     onChange(initial)
     document.documentElement.setAttribute('data-mode', initial)
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const toggle = () => {
-    const next: Mode = mode === 'work' ? 'life' : 'work'
+  const switchTo = (next: Mode) => {
+    if (next === mode) return
     setMode(next)
     onChange(next)
     localStorage.setItem('stuti-mode', next)
     document.documentElement.setAttribute('data-mode', next)
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-      navigator.vibrate(10)
-    }
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(6)
   }
 
   if (!mounted) {
+    // SSR / pre-hydration placeholder — same size, invisible
     return (
-      <div className="toggle-wrapper opacity-0">
-        <span className="toggle-label">WORK</span>
-        <div className="toggle-track work" style={{ width: 160, height: 48 }} />
-        <span className="toggle-label">LIFE</span>
+      <div className="toggle-shell" style={{ visibility: 'hidden' }} aria-hidden="true">
+        <div className="toggle-pill" />
+        <span className="toggle-label">Work</span>
+        <span className="toggle-label">Life</span>
       </div>
     )
   }
 
   return (
-    <div
-      className="toggle-wrapper"
-      onClick={toggle}
-      role="switch"
-      aria-checked={mode === 'life'}
-      aria-label="Toggle between Work and Life mode"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' || e.key === ' ' ? toggle() : null}
-    >
-      <span className={`toggle-label ${mode === 'work' ? 'active' : ''}`}>
-        WORK
-      </span>
+    <div className="toggle-shell" role="group" aria-label="Switch between Work and Life view">
+      {/* Animated sliding pill — translateX by 100% of its own width to reach Life */}
+      <motion.div
+        className="toggle-pill"
+        animate={{ x: mode === 'work' ? 0 : '100%' }}
+        initial={false}
+        transition={{ type: 'spring', stiffness: 480, damping: 36, mass: 0.8 }}
+      />
 
-      <div className={`toggle-track ${mode}`}>
-        <motion.div
-          className="toggle-puck"
-          animate={{ x: mode === 'work' ? 4 : 96 }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        />
-      </div>
+      <button
+        className={`toggle-label${mode === 'work' ? ' active' : ''}`}
+        onClick={() => switchTo('work')}
+        aria-pressed={mode === 'work'}
+      >
+        Work
+      </button>
 
-      <span className={`toggle-label ${mode === 'life' ? 'active' : ''}`}>
-        LIFE
-      </span>
+      <button
+        className={`toggle-label${mode === 'life' ? ' active' : ''}`}
+        onClick={() => switchTo('life')}
+        aria-pressed={mode === 'life'}
+      >
+        Life
+      </button>
     </div>
   )
 }

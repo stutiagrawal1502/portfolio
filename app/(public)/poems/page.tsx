@@ -25,34 +25,46 @@ export default async function PoemsPage() {
   })
 
   return (
-    <main className="poem-bg min-h-screen pt-28 pb-32 px-6">
-      <div className="max-w-xl mx-auto">
+    <main className="poem-bg" style={{ padding: '40px 24px 96px', minHeight: '80vh' }}>
+      <div style={{ maxWidth: 560, margin: '0 auto' }}>
 
-        {/* Header — minimal */}
-        <div className="mb-16">
-          <h1 className="font-display text-3xl font-normal text-ink mb-2">
+        {/* Header — deliberately sparse */}
+        <div style={{ marginBottom: 56 }}>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 400, color: 'var(--ink)', marginBottom: 12 }}>
             Poems
           </h1>
-          <p className="font-mono text-xs text-muted tracking-wide">
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
             written when the world gets too loud
           </p>
+          <div style={{ width: 32, height: 1, background: 'var(--poem-gold)', marginTop: 20, opacity: 0.6 }} />
         </div>
 
         {/* Poem list — table of contents style */}
         {poems.length === 0 ? (
-          <p className="font-mono text-sm text-muted">No poems yet.</p>
+          <div>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: 18, color: 'var(--muted)' }}>
+              The first poem is still being written.
+            </p>
+          </div>
         ) : (
-          <ol className="space-y-10">
-            {poems.map(poem => (
-              <li key={poem.id}>
+          <ol style={{ listStyle: 'none' }}>
+            {poems.map((poem, i) => (
+              <li key={poem.id} style={{ borderTop: i === 0 ? '1px solid var(--border-solid)' : 'none' }}>
                 <Link
                   href={`/poems/${poem.slug}`}
-                  className="group block"
+                  style={{ display: 'block', padding: '24px 0', borderBottom: '1px solid var(--border-solid)', textDecoration: 'none' }}
                 >
-                  <h2 className="font-display text-xl font-normal text-ink group-hover:text-poem-gold transition-colors duration-200">
-                    {poem.title}
-                  </h2>
-                  <p className="font-sans text-muted text-sm mt-1 leading-relaxed">
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 16, marginBottom: 6 }}>
+                    <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: 'var(--ink)', transition: 'color 0.2s' }}>
+                      {poem.title}
+                    </h2>
+                    {poem.publishedAt && (
+                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', flexShrink: 0 }}>
+                        {new Date(poem.publishedAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: 'var(--muted)', lineHeight: 1.5 }}>
                     {getFirstLine(poem.content)}
                   </p>
                 </Link>

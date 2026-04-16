@@ -6,46 +6,63 @@ export function DawnBackground() {
   const starsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Generate CSS star box-shadows
     const stars = starsRef.current
     if (!stars) return
-    const count = 60
-    const shadows = Array.from({ length: count }, () => {
+    // Subtle, refined star field — not overwhelming
+    const shadows = Array.from({ length: 55 }, () => {
       const x = Math.random() * 100
-      const y = Math.random() * 55
-      const size = Math.random() < 0.7 ? 1 : 2
-      return `${x}vw ${y}vh 0 ${size}px rgba(255,255,255,${(Math.random() * 0.25 + 0.1).toFixed(2)})`
+      const y = Math.random() * 65
+      const size = Math.random() < 0.72 ? 1 : 2
+      const opacity = (Math.random() * 0.35 + 0.08).toFixed(2)
+      return `${x}vw ${y}vh 0 ${size}px rgba(255,255,255,${opacity})`
     }).join(', ')
     stars.style.boxShadow = shadows
   }, [])
 
   return (
-    <div
-      className="fixed inset-0 -z-10 overflow-hidden"
-      aria-hidden="true"
-    >
-      {/* Dawn gradient */}
+    <div className="absolute inset-0" aria-hidden="true">
+      {/* Deep pre-dawn gradient */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(180deg, #1A2744 0%, #2B4C7E 18%, #3A6FA8 38%, #8FA8C8 58%, #C8B89A 75%, #F7F3EE 100%)',
-          backgroundSize: '100% 200%',
-          animation: 'dawnShift 20s ease-in-out infinite',
+          background: `linear-gradient(
+            180deg,
+            #06090F 0%,
+            #0B1120 20%,
+            #101928 40%,
+            #192238 60%,
+            #1E2B44 75%,
+            #0F0F0F 100%
+          )`,
         }}
       />
-      {/* Stars — fade as gradient lightens */}
+
+      {/* Subtle atmospheric glow at horizon */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(
+            ellipse 70% 25% at 50% 68%,
+            rgba(37, 99, 235, 0.08) 0%,
+            rgba(224, 92, 58, 0.06) 50%,
+            transparent 100%
+          )`,
+        }}
+      />
+
+      {/* Stars */}
       <div
         ref={starsRef}
         className="absolute top-0 left-0 w-px h-px"
-        style={{
-          animation: 'starFade 8s ease-in-out infinite',
-        }}
+        style={{ animation: 'starFade 12s ease-in-out infinite' }}
       />
-      {/* Warm paper fade at bottom */}
+
+      {/* Bottom gradient — fades hero into paper content */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-[35%]"
+        className="absolute bottom-0 left-0 right-0"
         style={{
-          background: 'linear-gradient(to top, var(--paper) 0%, transparent 100%)',
+          height: '25%',
+          background: 'linear-gradient(to bottom, transparent 0%, #0F0F0F 100%)',
         }}
       />
     </div>

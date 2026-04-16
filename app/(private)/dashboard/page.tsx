@@ -26,9 +26,12 @@ export default async function DashboardPage() {
 
   const dayNumber = config ? getDayNumber(config.startDate) : 0
   const streak = getStreak(recentDays)
-  const avgEnergy = recentDays.slice(0, 7)
-    .filter((d): d is typeof d & { energyBefore: number } => d.energyBefore != null)
-    .reduce((sum: number, d, _: number, arr: { energyBefore: number }[]) => sum + d.energyBefore / arr.length, 0)
+  const energyDays = recentDays.slice(0, 7).filter(
+    (d): d is typeof d & { energyBefore: number } => d.energyBefore != null
+  )
+  const avgEnergy = energyDays.length
+    ? energyDays.reduce((sum, d) => sum + d.energyBefore, 0) / energyDays.length
+    : 0
 
   const firstName = session?.user?.name?.split(' ')[0] ?? 'Stuti'
 

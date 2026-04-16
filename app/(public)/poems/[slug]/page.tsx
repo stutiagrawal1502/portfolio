@@ -33,11 +33,11 @@ export default async function PoemPage({
   const date = poem.publishedAt ?? poem.createdAt
 
   return (
-    <main className="poem-bg min-h-screen pt-24 pb-32 px-6">
-      <article className="max-w-[560px] mx-auto">
+    <main className="poem-bg" style={{ padding: '40px 24px 96px' }}>
+      <article style={{ maxWidth: 520, margin: '0 auto' }}>
 
         {/* Title */}
-        <h1 className="font-display text-2xl font-normal text-ink mb-12 text-center">
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: 'var(--ink)', textAlign: 'center', marginBottom: 48 }}>
           {poem.title}
         </h1>
 
