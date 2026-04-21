@@ -4,7 +4,6 @@ import { getDayNumber, getStreak, getAvgEnergy, getAvgWater } from '@/lib/journe
 import { FitnessDayCard } from '@/components/content/FitnessDayCard'
 
 export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
   title: 'Fitness Journey · Stuti Agrawal',
   description: '180 days. Starting from imperfect. Showing up anyway.',
@@ -13,10 +12,7 @@ export const metadata: Metadata = {
 export default async function FitnessPage() {
   const [config, days] = await Promise.all([
     prisma.journeyConfig.findUnique({ where: { id: 'singleton' } }),
-    prisma.fitnessDay.findMany({
-      where: { isPublic: true },
-      orderBy: { date: 'desc' },
-    }),
+    prisma.fitnessDay.findMany({ where: { isPublic: true }, orderBy: { date: 'desc' } }),
   ])
 
   const dayNumber = config ? getDayNumber(config.startDate) : 0
@@ -24,64 +20,165 @@ export default async function FitnessPage() {
   const avgEnergy = getAvgEnergy(days.slice(0, 7))
   const avgWater = getAvgWater(days.slice(0, 7))
   const progressPct = Math.min(100, (dayNumber / 180) * 100)
+  const startLabel = config
+    ? new Date(config.startDate).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : 'soon'
 
   return (
-    <main style={{ padding: '40px 24px 96px' }}>
-      <div style={{ maxWidth: 640, margin: '0 auto' }}>
+    <main style={{ padding: '40px 48px 96px', maxWidth: 680, margin: '0 auto' }}>
 
-        {/* Stats bar */}
-        <div className="mb-12">
-          <div className="flex items-baseline gap-3 mb-4">
-            <span className="font-mono text-5xl font-light text-ink">
-              Day {dayNumber}
-            </span>
-            <span className="font-mono text-muted text-sm">/180</span>
-          </div>
-
-          {/* Hand-drawn progress bar */}
-          <div className="progress-bar-track mb-3">
-            <div
-              className="progress-bar-fill"
-              style={{ width: `${progressPct}%` }}
-            />
-          </div>
-
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-6 font-mono text-sm text-muted">
-            <span>Streak: <strong className="text-ink">{streak}</strong> {streak === 1 ? 'day' : 'days'}</span>
-            {avgEnergy != null && (
-              <span>Avg energy: <strong className="text-ink">{avgEnergy}/10</strong></span>
-            )}
-            {avgWater != null && (
-              <span>Water avg: <strong className="text-ink">{avgWater}L</strong></span>
-            )}
-          </div>
-        </div>
-
-        {/* About the journey */}
-        <div className="mb-12 pb-8 border-b border-border">
-          <p className="font-sans text-muted leading-relaxed">
-            180 days. Starting from imperfect. Garden at 5am, come rain or audit season.
-            This is a training log, not a highlight reel.
-          </p>
-          {config?.note && (
-            <p className="font-display italic text-ink mt-3">{config.note}</p>
-          )}
-        </div>
-
-        {/* Timeline */}
-        {days.length === 0 ? (
-          <p className="font-mono text-sm text-muted">
-            The journey begins on {config ? new Date(config.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'soon'}.
-          </p>
-        ) : (
+      {/* Oversized day number hero */}
+      <div style={{ marginBottom: 40, position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
+          <span
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 'clamp(4rem, 12vw, 7rem)',
+              fontWeight: 300,
+              color: 'var(--ink)',
+              lineHeight: 1,
+              letterSpacing: '-0.04em',
+            }}
+          >
+            {dayNumber}
+          </span>
           <div>
-            {days.map(day => (
-              <FitnessDayCard key={day.id} day={day} />
-            ))}
+            <div
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 14,
+                color: 'var(--muted)',
+              }}
+            >
+              /180
+            </div>
+            <div
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 10,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'var(--muted)',
+                opacity: 0.6,
+              }}
+            >
+              days
+            </div>
           </div>
-        )}
+        </div>
+
+        <div
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontStyle: 'italic',
+            fontSize: 16,
+            color: 'var(--muted)',
+            marginBottom: 20,
+          }}
+        >
+          Starting from imperfect. Showing up anyway.
+        </div>
+
+        {/* Progress bar */}
+        <div className="progress-bar-track" style={{ marginBottom: 16 }}>
+          <div className="progress-bar-fill" style={{ width: `${progressPct}%` }} />
+        </div>
+
+        {/* Stats row */}
+        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+          {[
+            {
+              label: 'Streak',
+              value: streak,
+              suffix: streak === 1 ? ' day' : ' days',
+              color: '#16A34A',
+            },
+            ...(avgEnergy != null
+              ? [{ label: 'Avg energy', value: avgEnergy.toFixed(1), suffix: '/10', color: '#2563EB' }]
+              : []),
+            ...(avgWater != null
+              ? [{ label: 'Avg water', value: avgWater.toFixed(1), suffix: 'L', color: '#0891B2' }]
+              : []),
+          ].map(s => (
+            <div key={s.label}>
+              <div
+                style={{
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: 9,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--muted)',
+                  marginBottom: 4,
+                }}
+              >
+                {s.label}
+              </div>
+              <div
+                style={{
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: s.color,
+                  lineHeight: 1,
+                }}
+              >
+                {s.value}
+                <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--muted)' }}>
+                  {s.suffix}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, background: 'var(--border-solid)', marginBottom: 40 }} />
+
+      {/* Context note */}
+      {config?.note && (
+        <blockquote
+          style={{
+            borderLeft: '3px solid var(--garden-green)',
+            paddingLeft: 20,
+            marginBottom: 40,
+            fontFamily: "'Playfair Display', serif",
+            fontStyle: 'italic',
+            fontSize: 17,
+            color: 'var(--muted)',
+            lineHeight: 1.7,
+          }}
+        >
+          {config.note}
+        </blockquote>
+      )}
+
+      {/* Timeline */}
+      {days.length === 0 ? (
+        <div style={{ paddingTop: 32 }}>
+          <p
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontStyle: 'italic',
+              fontSize: 18,
+              color: 'var(--muted)',
+              lineHeight: 1.7,
+            }}
+          >
+            The journey begins {startLabel}.
+          </p>
+        </div>
+      ) : (
+        <div>
+          {days.map(day => (
+            <FitnessDayCard key={day.id} day={day} />
+          ))}
+        </div>
+      )}
     </main>
   )
 }

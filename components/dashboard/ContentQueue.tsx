@@ -19,7 +19,7 @@ const statusColors: Record<string, string> = {
   DRAFTED: 'var(--dawn-blue)',
   RECORDED: 'var(--poem-gold)',
   POSTED: 'var(--garden-green)',
-  SKIPPED: 'var(--border)',
+  SKIPPED: 'var(--border-solid)',
 }
 
 async function getThisWeekPlans(): Promise<ContentPlan[]> {
@@ -60,19 +60,18 @@ export function ContentQueue() {
 
   if (!plans.length) {
     return (
-      <div
-        className="rounded-sm p-5 border"
-        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-      >
-        <p
-          className="font-mono text-xs tracking-widest uppercase mb-4"
-          style={{ color: 'var(--muted)' }}
-        >
+      <div style={{
+        borderRadius: 2,
+        padding: 20,
+        border: '1px solid var(--border-solid)',
+        background: 'var(--surface)',
+      }}>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
           Content Queue
         </p>
-        <p className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: 'var(--muted)' }}>
           No content planned this week.{' '}
-          <Link href="/planner" className="hover:underline" style={{ color: 'var(--dawn-blue)' }}>
+          <Link href="/planner" style={{ color: 'var(--dawn-blue)', textDecoration: 'none' }}>
             Add some →
           </Link>
         </p>
@@ -81,50 +80,70 @@ export function ContentQueue() {
   }
 
   return (
-    <div
-      className="rounded-sm p-5 border"
-      style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-    >
-      <div className="flex items-center justify-between mb-4">
-        <p className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--muted)' }}>
+    <div style={{
+      borderRadius: 2,
+      padding: 20,
+      border: '1px solid var(--border-solid)',
+      background: 'var(--surface)',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)' }}>
           Content Queue
         </p>
         <Link
           href="/planner"
-          className="font-mono text-xs hover:underline"
-          style={{ color: 'var(--muted)' }}
+          style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', textDecoration: 'none' }}
         >
           Planner →
         </Link>
       </div>
 
-      <div className="space-y-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {plans.map(plan => (
           <div
             key={plan.id}
-            className="flex items-center gap-3 py-2 border-b"
-            style={{ borderColor: 'var(--border)' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              padding: '10px 0',
+              borderBottom: '1px solid var(--border-solid)',
+            }}
           >
-            <span
-              className="font-mono text-xs w-14 flex-shrink-0"
-              style={{ color: 'var(--muted)' }}
-            >
+            <span style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 11,
+              color: 'var(--muted)',
+              width: 48,
+              flexShrink: 0,
+            }}>
               {formatDateShort(plan.date).split(',')[0]}
             </span>
-            <div className="flex-1 min-w-0">
-              <p
-                className="font-sans text-sm truncate"
-                style={{ color: 'var(--ink)' }}
-              >
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+                color: 'var(--ink)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}>
                 {plan.title ?? `${plan.type} — ${plan.platform}`}
               </p>
             </div>
             <button
               onClick={() => cycleStatus(plan)}
-              className="font-mono text-xs px-2 py-0.5 rounded-sm flex-shrink-0"
               style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 10,
+                letterSpacing: '0.06em',
+                padding: '3px 8px',
+                borderRadius: 3,
+                flexShrink: 0,
+                cursor: 'pointer',
+                background: 'transparent',
                 color: statusColors[plan.status] ?? 'var(--muted)',
-                border: `1px solid ${statusColors[plan.status] ?? 'var(--border)'}`,
+                border: `1px solid ${statusColors[plan.status] ?? 'var(--border-solid)'}`,
               }}
             >
               {plan.status}

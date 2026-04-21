@@ -38,7 +38,7 @@ export default function ExpressionsPage() {
     if (activeFilter !== 'ALL') params.set('type', activeFilter)
     setLoading(true)
     fetch(`/api/posts?${params}`)
-      .then(r => r.ok ? r.json() : [])
+      .then(r => (r.ok ? r.json() : []))
       .then((data: Post[]) => setPosts(data))
       .catch(() => setPosts([]))
       .finally(() => setLoading(false))
@@ -49,14 +49,46 @@ export default function ExpressionsPage() {
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         {/* Header */}
-        <div style={{ marginBottom: 48, borderBottom: '1px solid var(--border-solid)', paddingBottom: 32 }}>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 10 }}>
+        <div
+          style={{
+            marginBottom: 48,
+            borderBottom: '1px solid var(--border-solid)',
+            paddingBottom: 32,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 11,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              display: 'block',
+              marginBottom: 10,
+            }}
+          >
             All writing
           </span>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', fontWeight: 400, color: 'var(--ink)', lineHeight: 1.1, marginBottom: 12 }}>
+          <h1
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 'clamp(2.25rem, 5vw, 3.5rem)',
+              fontWeight: 400,
+              color: 'var(--ink)',
+              lineHeight: 1.1,
+              marginBottom: 12,
+            }}
+          >
             Expressions
           </h1>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: 'var(--muted)', maxWidth: 480 }}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 16,
+              color: 'var(--muted)',
+              maxWidth: 480,
+            }}
+          >
             Journal entries, essays, poems, and everything in between. Unfiltered, honest, mine.
           </p>
         </div>
@@ -76,10 +108,28 @@ export default function ExpressionsPage() {
 
         {/* Posts grid — editorial layout */}
         {loading ? (
-          <div className="font-mono text-sm text-muted animate-pulse">Loading...</div>
+          <div
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 13,
+              color: 'var(--muted)',
+              opacity: 0.6,
+              padding: '48px 0',
+            }}
+          >
+            Loading...
+          </div>
         ) : posts.length === 0 ? (
-          <div className="font-mono text-sm text-muted">
-            Nothing here yet. {activeFilter !== 'ALL' && 'Try a different filter.'}
+          <div
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontStyle: 'italic',
+              fontSize: 18,
+              color: 'var(--muted)',
+              padding: '48px 0',
+            }}
+          >
+            Nothing here yet.{activeFilter !== 'ALL' && ' Try a different filter.'}
           </div>
         ) : (
           <EditorialLayout posts={posts} />
@@ -90,7 +140,7 @@ export default function ExpressionsPage() {
 }
 
 function EditorialLayout({ posts }: { posts: Post[] }) {
-  // Pattern: featured (full width), 2-col, wide, 3-col, repeat
+  // Pattern: featured (full width), 2-col, wide single, 3-col, repeat
   const groups: Post[][] = []
   let i = 0
 
@@ -98,26 +148,22 @@ function EditorialLayout({ posts }: { posts: Post[] }) {
     const pattern = groups.length % 4
 
     if (pattern === 0) {
-      // 1 featured
       groups.push(posts.slice(i, i + 1))
       i += 1
     } else if (pattern === 1) {
-      // 2-col
       groups.push(posts.slice(i, i + 2))
       i += 2
     } else if (pattern === 2) {
-      // 1 wide
       groups.push(posts.slice(i, i + 1))
       i += 1
     } else {
-      // 3-col
       groups.push(posts.slice(i, i + 3))
       i += 3
     }
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       {groups.map((group, gi) => {
         const pattern = gi % 4
 
@@ -131,23 +177,33 @@ function EditorialLayout({ posts }: { posts: Post[] }) {
 
         if (pattern === 1) {
           return (
-            <div key={gi} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {group.map(p => <PostCard key={p.id} post={p} />)}
+            <div
+              key={gi}
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}
+            >
+              {group.map(p => (
+                <PostCard key={p.id} post={p} />
+              ))}
             </div>
           )
         }
 
         if (pattern === 2) {
           return (
-            <div key={gi} className="max-w-2xl">
+            <div key={gi} style={{ maxWidth: 640 }}>
               <PostCard post={group[0]} />
             </div>
           )
         }
 
         return (
-          <div key={gi} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {group.map(p => <PostCard key={p.id} post={p} size="compact" />)}
+          <div
+            key={gi}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}
+          >
+            {group.map(p => (
+              <PostCard key={p.id} post={p} size="compact" />
+            ))}
           </div>
         )
       })}

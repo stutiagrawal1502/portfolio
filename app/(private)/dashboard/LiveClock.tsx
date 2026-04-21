@@ -28,7 +28,7 @@ export function LiveClock() {
   if (!time) return null
 
   return (
-    <p className="font-mono text-sm mt-1" style={{ color: 'var(--muted)' }}>
+    <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, marginTop: 4, color: 'var(--muted)' }}>
       {time}
     </p>
   )

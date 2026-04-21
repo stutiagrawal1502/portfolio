@@ -16,8 +16,7 @@ interface WeekCalendarProps {
 
 function getWeekDays(): Date[] {
   const today = new Date()
-  const dayOfWeek = today.getDay() // 0=Sun
-  // Start from Monday
+  const dayOfWeek = today.getDay()
   const monday = new Date(today)
   monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7))
 
@@ -36,18 +35,17 @@ export function WeekCalendar({ days = [] }: WeekCalendarProps) {
     days.find(d => new Date(d.date).toDateString() === date.toDateString())
 
   return (
-    <div
-      className="rounded-sm p-5 border"
-      style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-    >
-      <p
-        className="font-mono text-xs tracking-widest uppercase mb-4"
-        style={{ color: 'var(--muted)' }}
-      >
+    <div style={{
+      borderRadius: 2,
+      padding: 20,
+      border: '1px solid var(--border-solid)',
+      background: 'var(--surface)',
+    }}>
+      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
         This Week
       </p>
 
-      <div className="flex gap-2 justify-between">
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'space-between' }}>
         {weekDays.map((date, i) => {
           const data = getDayData(date)
           const dateStr = date.toISOString().split('T')[0]

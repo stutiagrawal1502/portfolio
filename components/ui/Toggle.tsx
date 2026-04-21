@@ -8,26 +8,43 @@ interface ToggleProps {
 }
 
 export function Toggle({ checked, onChange, label, size = 'md' }: ToggleProps) {
-  const w = size === 'sm' ? 'w-9 h-5' : 'w-12 h-6'
-  const puck = size === 'sm' ? 'w-3.5 h-3.5' : 'w-4.5 h-4.5'
-  const translate = size === 'sm'
-    ? (checked ? 'translate-x-4' : 'translate-x-0.5')
-    : (checked ? 'translate-x-6' : 'translate-x-0.5')
+  const w = size === 'sm' ? 36 : 48
+  const h = size === 'sm' ? 20 : 24
+  const puckSize = size === 'sm' ? 14 : 18
+  const puckOffset = 3
+  const puckTravel = size === 'sm' ? 16 : 21
 
   return (
-    <label className="flex items-center gap-2 cursor-pointer select-none">
+    <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', userSelect: 'none' }}>
       <div
-        className={`${w} relative rounded-full transition-colors duration-200 ${
-          checked ? 'bg-ink' : 'bg-border'
-        }`}
+        style={{
+          width: w,
+          height: h,
+          position: 'relative',
+          borderRadius: h / 2,
+          background: checked ? 'var(--ink)' : 'var(--border-solid)',
+          transition: 'background 0.2s',
+          flexShrink: 0,
+        }}
         onClick={() => onChange(!checked)}
       >
         <div
-          className={`${puck} absolute top-[3px] rounded-full bg-paper shadow-sm transition-transform duration-200 ${translate}`}
+          style={{
+            width: puckSize,
+            height: puckSize,
+            position: 'absolute',
+            top: puckOffset,
+            left: puckOffset,
+            borderRadius: '50%',
+            background: 'var(--paper)',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+            transition: 'transform 0.2s',
+            transform: `translateX(${checked ? puckTravel : 0}px)`,
+          }}
         />
       </div>
       {label && (
-        <span className="font-mono text-xs text-muted uppercase tracking-widest">
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
           {label}
         </span>
       )}

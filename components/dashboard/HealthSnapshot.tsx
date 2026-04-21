@@ -56,56 +56,55 @@ export function HealthSnapshot({ recentEnergy = [] }: HealthSnapshotProps) {
   })()
 
   return (
-    <div
-      className="rounded-sm p-5 border"
-      style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-    >
-      <p
-        className="font-mono text-xs tracking-widest uppercase mb-4"
-        style={{ color: 'var(--muted)' }}
-      >
+    <div style={{
+      borderRadius: 2,
+      padding: 20,
+      border: '1px solid var(--border-solid)',
+      background: 'var(--surface)',
+    }}>
+      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
         Health
       </p>
 
       {/* Energy sparkline */}
       {sparkline && (
-        <div className="mb-4">
-          <p className="font-mono text-xs mb-1" style={{ color: 'var(--muted)' }}>
+        <div style={{ marginBottom: 16 }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>
             Energy (7d)
           </p>
-          <svg width={80} height={28} className="overflow-visible">
+          <svg width={80} height={28} style={{ overflow: 'visible' }}>
             {sparkline}
           </svg>
         </div>
       )}
 
       {/* Key metrics */}
-      <div className="space-y-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {lastVitaminD && (
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
               Vitamin D
             </span>
-            <span className="font-mono text-xs" style={{ color: 'var(--ink)' }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--ink)' }}>
               {lastVitaminD.value} {lastVitaminD.unit}
-              <span className="ml-2" style={{ color: 'var(--muted)' }}>
+              <span style={{ color: 'var(--muted)', marginLeft: 8 }}>
                 {formatDate(lastVitaminD.date).split(',')[0]}
               </span>
             </span>
           </div>
         )}
         {lastB12 && (
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
               B12
             </span>
-            <span className="font-mono text-xs" style={{ color: 'var(--ink)' }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--ink)' }}>
               {lastB12.value} {lastB12.unit}
             </span>
           </div>
         )}
         {!lastVitaminD && !lastB12 && (
-          <p className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
             No metrics logged yet.
           </p>
         )}

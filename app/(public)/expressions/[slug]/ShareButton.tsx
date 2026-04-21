@@ -14,7 +14,18 @@ export function ShareButton() {
   return (
     <button
       onClick={handleCopy}
-      className="font-mono text-xs tracking-widest uppercase text-muted hover:text-ink transition-colors border border-border px-4 py-2 rounded-sm"
+      style={{
+        fontFamily: "'DM Mono', monospace",
+        fontSize: 11,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        color: 'var(--muted)',
+        border: '1px solid var(--border-solid)',
+        padding: '8px 16px',
+        borderRadius: 3,
+        background: 'transparent',
+        cursor: 'pointer',
+      }}
     >
       {copied ? 'Copied ✓' : 'Copy link'}
     </button>

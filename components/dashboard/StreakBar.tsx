@@ -9,39 +9,43 @@ export function StreakBar({ streak, longestStreak, recentDays = [] }: StreakBarP
   const padded = Array.from({ length: 30 }, (_, i) => last30[i] ?? null)
 
   return (
-    <div
-      className="rounded-sm p-5 border"
-      style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-    >
-      <p className="font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>
+    <div style={{
+      borderRadius: 2,
+      padding: 20,
+      border: '1px solid var(--border-solid)',
+      background: 'var(--surface)',
+    }}>
+      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>
         Streak
       </p>
-      <div className="flex items-baseline gap-1 mb-3">
-        <span className="font-mono font-light" style={{ fontSize: 48, lineHeight: 1, color: 'var(--ink)' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 12 }}>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 300, fontSize: 48, lineHeight: 1, color: 'var(--ink)' }}>
           {streak}
         </span>
-        <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>days</span>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>days</span>
       </div>
 
       {/* 30-day grid */}
-      <div className="flex gap-0.5 flex-wrap mb-2">
+      <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 8 }}>
         {padded.reverse().map((d, i) => (
           <div
             key={i}
-            className="w-3 h-3 rounded-sm"
             style={{
+              width: 12,
+              height: 12,
+              borderRadius: 2,
               background: d === null
                 ? 'transparent'
                 : d.worked
                   ? 'var(--garden-green)'
-                  : 'var(--border)',
-              border: d === null ? '1px solid var(--border)' : 'none',
+                  : 'var(--border-solid)',
+              border: d === null ? '1px solid var(--border-solid)' : 'none',
             }}
           />
         ))}
       </div>
 
-      <p className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
         Best: {longestStreak} days
       </p>
     </div>

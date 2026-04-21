@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
   const type = searchParams.get('type') as PostType | null
   const status = searchParams.get('status') as PostStatus | null
   const slug = searchParams.get('slug')
+  const id = searchParams.get('id')
   const limit = parseInt(searchParams.get('limit') ?? '50')
 
   // Private posts require auth
@@ -18,6 +19,7 @@ export async function GET(req: NextRequest) {
   const where: Record<string, unknown> = {}
   if (type) where.type = type
   if (slug) where.slug = slug
+  if (id) where.id = id
   if (status) {
     where.status = status
   } else if (!isAuthed) {

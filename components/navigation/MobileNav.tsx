@@ -13,13 +13,8 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ isOpen, onClose, links, showDashboard, mode }: MobileNavProps) {
-  // Prevent body scroll when open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
@@ -29,40 +24,77 @@ export function MobileNav({ isOpen, onClose, links, showDashboard, mode }: Mobil
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-40 bg-ink/40 backdrop-blur-sm"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 40,
+              background: 'rgba(10,10,15,0.5)',
+              backdropFilter: 'blur(4px)',
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
+
+          {/* Drawer */}
           <motion.div
-            className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-paper flex flex-col"
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 50,
+              width: 288,
+              background: 'var(--paper)',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 400, damping: 40 }}
           >
-            <div className="flex items-center justify-between p-6 border-b border-border">
-              <span className="font-mono text-xs tracking-widest uppercase text-muted">
+            {/* Header */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '24px',
+              borderBottom: '1px solid var(--border-solid)',
+            }}>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
                 Menu
               </span>
               <button
                 onClick={onClose}
-                className="text-muted hover:text-ink transition-colors"
                 aria-label="Close menu"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 16, padding: 0, lineHeight: 1 }}
               >
                 ✕
               </button>
             </div>
 
-            <nav className="flex flex-col gap-1 p-6">
+            {/* Links */}
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: 0, padding: '24px' }}>
               {links.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={onClose}
-                  className="font-mono text-sm tracking-wide uppercase text-muted hover:text-ink transition-colors py-3 border-b border-border/50"
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: 13,
+                    letterSpacing: '0.10em',
+                    textTransform: 'uppercase',
+                    color: 'var(--muted)',
+                    textDecoration: 'none',
+                    padding: '14px 0',
+                    borderBottom: '1px solid var(--border-solid)',
+                    display: 'block',
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -71,18 +103,33 @@ export function MobileNav({ isOpen, onClose, links, showDashboard, mode }: Mobil
                 <Link
                   href="/dashboard"
                   onClick={onClose}
-                  className="font-mono text-sm tracking-wide uppercase py-3"
-                  style={{ color: accentColor }}
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: 13,
+                    letterSpacing: '0.10em',
+                    textTransform: 'uppercase',
+                    color: accentColor,
+                    textDecoration: 'none',
+                    padding: '14px 0',
+                    display: 'block',
+                  }}
                 >
-                  Dashboard
+                  Dashboard →
                 </Link>
               )}
             </nav>
 
-            <div className="mt-auto p-6">
+            {/* Footer */}
+            <div style={{ marginTop: 'auto', padding: '24px' }}>
               <Link
                 href="/"
-                className="font-display text-2xl font-normal text-ink"
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 24,
+                  fontWeight: 400,
+                  color: 'var(--ink)',
+                  textDecoration: 'none',
+                }}
               >
                 Stuti
               </Link>

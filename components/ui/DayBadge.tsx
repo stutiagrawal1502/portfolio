@@ -15,31 +15,42 @@ export function DayBadge({
 }: DayBadgeProps) {
   return (
     <div
-      className={`flex flex-col items-center gap-1 cursor-pointer ${onClick ? 'hover:opacity-80' : ''}`}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: onClick ? 'pointer' : 'default' }}
       onClick={onClick}
     >
       {dayLabel && (
-        <span
-          className={`font-mono text-xs ${isToday ? 'text-dawn-rose font-medium' : 'text-muted'}`}
-        >
+        <span style={{
+          fontFamily: "'DM Mono', monospace",
+          fontSize: 11,
+          color: isToday ? 'var(--dawn-rose)' : 'var(--muted)',
+          fontWeight: isToday ? 600 : 400,
+        }}>
           {dayLabel}
         </span>
       )}
-      <div
-        className={`w-7 h-7 rounded-full flex items-center justify-center border ${
-          isToday
-            ? 'border-dawn-rose border-2'
-            : 'border-transparent'
-        }`}
-      >
-        <div className="flex gap-0.5 items-center">
-          {hasWorkout ? (
-            <div className="w-2 h-2 rounded-full bg-garden-green" title="Worked out" />
-          ) : (
-            <div className="w-2 h-2 rounded-full bg-border" title="No workout" />
-          )}
+      <div style={{
+        width: 28,
+        height: 28,
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: isToday ? '2px solid var(--dawn-rose)' : '1px solid transparent',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <div style={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            background: hasWorkout ? 'var(--garden-green)' : 'var(--border-solid)',
+          }} title={hasWorkout ? 'Worked out' : 'No workout'} />
           {hasPost && (
-            <div className="w-1.5 h-1.5 rounded-full bg-dawn-blue" title="Post published" />
+            <div style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: 'var(--dawn-blue)',
+            }} title="Post published" />
           )}
         </div>
       </div>

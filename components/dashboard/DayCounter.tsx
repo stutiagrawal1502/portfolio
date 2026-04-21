@@ -11,22 +11,21 @@ export function DayCounter({ dayNumber, total = 180 }: DayCounterProps) {
   const pct = Math.min(100, (dayNumber / total) * 100)
 
   return (
-    <Link href="/fitness-log" className="block group">
-      <div
-        className="rounded-sm p-5 border"
-        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-      >
-        <p className="font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>
+    <Link href="/fitness-log" style={{ display: 'block', textDecoration: 'none' }}>
+      <div style={{
+        borderRadius: 2,
+        padding: 20,
+        border: '1px solid var(--border-solid)',
+        background: 'var(--surface)',
+      }}>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>
           Days
         </p>
-        <div className="flex items-baseline gap-1 mb-3">
-          <span
-            className="font-mono font-light group-hover:opacity-80 transition-opacity"
-            style={{ fontSize: 48, lineHeight: 1, color: 'var(--ink)' }}
-          >
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 12 }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 300, fontSize: 48, lineHeight: 1, color: 'var(--ink)' }}>
             {dayNumber}
           </span>
-          <span className="font-mono text-sm" style={{ color: 'var(--muted)' }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--muted)' }}>
             /{total}
           </span>
         </div>

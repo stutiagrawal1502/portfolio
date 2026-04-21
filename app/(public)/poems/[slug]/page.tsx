@@ -33,11 +33,28 @@ export default async function PoemPage({
   const date = poem.publishedAt ?? poem.createdAt
 
   return (
-    <main className="poem-bg" style={{ padding: '40px 24px 96px' }}>
+    <main className="poem-bg" style={{ padding: '80px 24px 120px' }}>
       <article style={{ maxWidth: 520, margin: '0 auto' }}>
 
+        {/* Eyebrow */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 48 }}>
+          <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--poem-gold)', display: 'inline-block' }} />
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+            Poem
+          </span>
+          <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--poem-gold)', display: 'inline-block' }} />
+        </div>
+
         {/* Title */}
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: 'var(--ink)', textAlign: 'center', marginBottom: 48 }}>
+        <h1 style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 'clamp(1.75rem, 4vw, 2.25rem)',
+          fontWeight: 400,
+          color: 'var(--ink)',
+          textAlign: 'center',
+          lineHeight: 1.2,
+          marginBottom: 56,
+        }}>
           {poem.title}
         </h1>
 
@@ -45,22 +62,47 @@ export default async function PoemPage({
         <PoemRenderer content={poem.content} />
 
         {/* Thin separator */}
-        <hr className="border-border my-12 max-w-[120px] mx-auto" />
+        <div style={{
+          width: 80,
+          height: 1,
+          background: 'var(--border-solid)',
+          margin: '56px auto',
+        }} />
 
         {/* Context note (mood as context) */}
         {poem.mood && (
-          <p className="font-mono text-xs text-muted text-center mb-4">
+          <p style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 11,
+            color: 'var(--muted)',
+            textAlign: 'center',
+            marginBottom: 10,
+            letterSpacing: '0.06em',
+          }}>
             Written — {poem.mood}
           </p>
         )}
 
         {/* Date */}
-        <p className="font-mono text-xs text-muted text-center mb-8">
+        <p style={{
+          fontFamily: "'DM Mono', monospace",
+          fontSize: 11,
+          color: 'var(--muted)',
+          textAlign: 'center',
+          marginBottom: 32,
+          opacity: 0.6,
+        }}>
           {formatDate(date)}
         </p>
 
         {/* Byline */}
-        <p className="font-display italic text-muted text-right">
+        <p style={{
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: 'italic',
+          fontSize: 15,
+          color: 'var(--muted)',
+          textAlign: 'right',
+        }}>
           — Stuti Agrawal
         </p>
       </article>

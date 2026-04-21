@@ -71,12 +71,13 @@ export default function EditPostPage() {
     if (saveTimeout.current) clearTimeout(saveTimeout.current)
     saveTimeout.current = setTimeout(() => save(), 3000)
     return () => { if (saveTimeout.current) clearTimeout(saveTimeout.current) }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, content, type, mood, tags, loaded])
 
   if (!loaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <span className="font-mono text-sm animate-pulse" style={{ color: 'var(--muted)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--paper)' }}>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'var(--muted)' }}>
           Loading...
         </span>
       </div>
@@ -84,17 +85,34 @@ export default function EditPostPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--paper)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--paper)' }}>
+
       {/* Top bar */}
-      <div
-        className="sticky top-14 z-40 flex items-center gap-3 px-6 py-3 border-b"
-        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-      >
+      <div style={{
+        position: 'sticky',
+        top: 56,
+        zIndex: 40,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '12px 24px',
+        borderBottom: '1px solid var(--border-solid)',
+        background: 'var(--surface)',
+      }}>
         <select
           value={type}
           onChange={e => setType(e.target.value as PostType)}
-          className="font-mono text-xs bg-transparent border border-border rounded-sm px-2 py-1 focus:outline-none"
-          style={{ color: 'var(--ink)', borderColor: 'var(--border)' }}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 11,
+            background: 'transparent',
+            border: '1px solid var(--border-solid)',
+            borderRadius: 4,
+            padding: '4px 8px',
+            color: 'var(--ink)',
+            outline: 'none',
+            cursor: 'pointer',
+          }}
         >
           {postTypes.map(t => (
             <option key={t} value={t}>{t.replace('_', ' ')}</option>
@@ -104,8 +122,17 @@ export default function EditPostPage() {
         <select
           value={status}
           onChange={e => setStatus(e.target.value as PostStatus)}
-          className="font-mono text-xs bg-transparent border border-border rounded-sm px-2 py-1 focus:outline-none"
-          style={{ color: 'var(--ink)', borderColor: 'var(--border)' }}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 11,
+            background: 'transparent',
+            border: '1px solid var(--border-solid)',
+            borderRadius: 4,
+            padding: '4px 8px',
+            color: 'var(--ink)',
+            outline: 'none',
+            cursor: 'pointer',
+          }}
         >
           <option value="DRAFT">Draft</option>
           <option value="PUBLISHED">Published</option>
@@ -113,88 +140,148 @@ export default function EditPostPage() {
 
         <Toggle checked={poemMode} onChange={setPoemMode} label="Poem mode" size="sm" />
 
-        <div className="flex-1" />
+        <div style={{ flex: 1 }} />
 
         {lastSaved && (
-          <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
             {saving ? 'Saving...' : `Saved ${lastSaved}`}
           </span>
         )}
 
         <button
           onClick={() => save()}
-          className="font-mono text-xs uppercase tracking-widest px-3 py-1.5 border rounded-sm"
-          style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 11,
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            padding: '6px 14px',
+            border: '1px solid var(--border-solid)',
+            borderRadius: 4,
+            background: 'transparent',
+            color: 'var(--muted)',
+            cursor: 'pointer',
+          }}
         >
           Save
         </button>
 
         <button
           onClick={() => save(true)}
-          className="font-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded-sm"
-          style={{ background: 'var(--ink)', color: 'var(--paper)' }}
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: 11,
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            padding: '6px 14px',
+            borderRadius: 4,
+            border: 'none',
+            background: 'var(--ink)',
+            color: 'var(--paper)',
+            cursor: 'pointer',
+          }}
         >
           Publish
         </button>
       </div>
 
       {/* Editor */}
-      <div className={`flex-1 max-w-3xl mx-auto w-full px-6 py-10 ${poemMode ? 'text-center' : ''}`}>
+      <div style={{
+        flex: 1,
+        maxWidth: 720,
+        margin: '0 auto',
+        width: '100%',
+        padding: '48px 24px',
+        textAlign: poemMode ? 'center' : 'left',
+      }}>
         <input
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Title"
-          className="w-full bg-transparent font-display font-normal text-ink placeholder-border focus:outline-none mb-6"
           style={{
-            fontSize: poemMode ? '2rem' : '2.5rem',
+            width: '100%',
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 400,
+            color: 'var(--ink)',
+            fontSize: poemMode ? '1.875rem' : '2.5rem',
             textAlign: poemMode ? 'center' : 'left',
+            marginBottom: 24,
           }}
         />
-        <div
-          className="w-8 h-px mb-8"
-          style={{
-            background: 'var(--border)',
-            margin: poemMode ? '0 auto 2rem' : '0 0 2rem',
-          }}
-        />
+
+        <div style={{
+          width: 32,
+          height: 1,
+          background: 'var(--border-solid)',
+          marginBottom: 32,
+          marginLeft: poemMode ? 'auto' : 0,
+          marginRight: poemMode ? 'auto' : 0,
+        }} />
+
         <textarea
           value={content}
           onChange={e => setContent(e.target.value)}
           placeholder={poemMode ? 'Begin...' : 'Start writing...'}
-          className="w-full bg-transparent focus:outline-none resize-none"
           style={{
+            width: '100%',
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            resize: 'none',
             fontFamily: poemMode ? "'Playfair Display', serif" : "'DM Sans', sans-serif",
             fontStyle: poemMode ? 'italic' : 'normal',
-            fontSize: poemMode ? '19px' : '18px',
+            fontSize: poemMode ? 19 : 18,
             lineHeight: poemMode ? 2 : 1.8,
             color: 'var(--ink)',
             textAlign: poemMode ? 'center' : 'left',
-            minHeight: '400px',
+            minHeight: 400,
           }}
           rows={20}
         />
-        <div className="mt-10 pt-6 border-t space-y-4" style={{ borderColor: 'var(--border)' }}>
+
+        <div style={{ marginTop: 40, paddingTop: 24, borderTop: '1px solid var(--border-solid)', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <input
             type="text"
             value={mood}
             onChange={e => setMood(e.target.value)}
-            placeholder="Mood"
-            className="w-full bg-transparent font-mono text-sm border-b pb-2 focus:outline-none"
-            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+            placeholder="Mood (e.g. quiet and awake)"
+            style={{
+              width: '100%',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: '1px solid var(--border-solid)',
+              outline: 'none',
+              paddingBottom: 8,
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 13,
+              color: 'var(--muted)',
+            }}
           />
           <input
             type="text"
             value={tags}
             onChange={e => setTags(e.target.value)}
             placeholder="Tags (comma-separated)"
-            className="w-full bg-transparent font-mono text-sm border-b pb-2 focus:outline-none"
-            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+            style={{
+              width: '100%',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: '1px solid var(--border-solid)',
+              outline: 'none',
+              paddingBottom: 8,
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 13,
+              color: 'var(--muted)',
+            }}
           />
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-6 font-mono text-xs" style={{ color: 'var(--muted)' }}>
+      <div style={{ position: 'fixed', bottom: 24, right: 24, fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
         {wordCount} words
       </div>
     </div>

@@ -69,7 +69,8 @@ export function Nav() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navClass}`}
+        className={`${navClass}`}
+        style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, transition: 'all 0.3s' }}
       >
         <div
           style={{
@@ -98,7 +99,7 @@ export function Nav() {
           </Link>
 
           {/* Desktop links */}
-          <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
             {navLinks.map(link => (
               <Link
                 key={link.href}
@@ -138,13 +139,13 @@ export function Nav() {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden flex flex-col gap-1.5 p-1"
+            style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 4, background: 'none', border: 'none', cursor: 'pointer' }}
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >
-            <span className="block w-5 h-px" style={{ background: hamColor }} />
-            <span className="block w-5 h-px" style={{ background: hamColor }} />
-            <span className="block w-3.5 h-px" style={{ background: hamColor }} />
+            <span style={{ display: 'block', width: 20, height: 1, background: hamColor }} />
+            <span style={{ display: 'block', width: 20, height: 1, background: hamColor }} />
+            <span style={{ display: 'block', width: 14, height: 1, background: hamColor }} />
           </button>
         </div>
       </nav>

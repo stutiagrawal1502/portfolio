@@ -22,15 +22,17 @@ export function FitnessDayCard({ day }: FitnessDayCardProps) {
 
   if (milestoneLabel) {
     return (
-      <div className="flex gap-6 py-8 items-start">
-        <div className="font-mono text-4xl text-border font-light w-16 text-right flex-shrink-0">
+      <div style={{ display: 'flex', gap: 24, paddingTop: 32, paddingBottom: 32, alignItems: 'flex-start' }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '2.25rem', color: 'var(--border-solid)', fontWeight: 300, width: 64, textAlign: 'right', flexShrink: 0, lineHeight: 1 }}>
           {day.dayNumber}
         </div>
         <div>
           <div className="milestone-stamp">
             {milestoneLabel}
           </div>
-          <p className="font-mono text-xs text-muted mt-2">{formatDate(day.date)}</p>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', marginTop: 8 }}>
+            {formatDate(day.date)}
+          </p>
         </div>
       </div>
     )
@@ -38,14 +40,18 @@ export function FitnessDayCard({ day }: FitnessDayCardProps) {
 
   if (!day.worked) {
     return (
-      <div className="flex gap-6 py-4 items-start border-b border-border/30">
-        <div className="font-mono text-2xl text-border/60 font-light w-16 text-right flex-shrink-0">
+      <div style={{ display: 'flex', gap: 24, paddingTop: 16, paddingBottom: 16, alignItems: 'flex-start', borderBottom: '1px solid var(--border-solid)' }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '1.5rem', color: 'var(--border-solid)', fontWeight: 300, width: 64, textAlign: 'right', flexShrink: 0, lineHeight: 1 }}>
           {day.dayNumber}
         </div>
-        <div className="pt-1">
-          <p className="font-mono text-xs text-border">{formatDate(day.date)}</p>
+        <div style={{ paddingTop: 4 }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--border-solid)' }}>
+            {formatDate(day.date)}
+          </p>
           {day.notes && (
-            <p className="font-sans text-sm text-muted mt-1 italic">{day.notes}</p>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'var(--muted)', marginTop: 4, fontStyle: 'italic' }}>
+              {day.notes}
+            </p>
           )}
         </div>
       </div>
@@ -53,28 +59,32 @@ export function FitnessDayCard({ day }: FitnessDayCardProps) {
   }
 
   return (
-    <div className="flex gap-6 py-5 items-start border-b border-border/30 group">
+    <div style={{ display: 'flex', gap: 24, paddingTop: 20, paddingBottom: 20, alignItems: 'flex-start', borderBottom: '1px solid var(--border-solid)' }}>
       {/* Day number */}
-      <div className="font-mono text-3xl text-muted font-light w-16 text-right flex-shrink-0 group-hover:text-ink transition-colors">
+      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '1.75rem', color: 'var(--muted)', fontWeight: 300, width: 64, textAlign: 'right', flexShrink: 0, lineHeight: 1 }}>
         {day.dayNumber}
       </div>
 
-      <div className="flex-1">
+      <div style={{ flex: 1 }}>
         {/* Date + workout type */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-mono text-xs text-muted">{formatDate(day.date)}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
+            {formatDate(day.date)}
+          </span>
           {day.workoutType && (
             <span className="type-badge type-badge-fitness">{day.workoutType}</span>
           )}
           {day.durationMins && (
-            <span className="font-mono text-xs text-muted">{day.durationMins}m</span>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
+              {day.durationMins}m
+            </span>
           )}
         </div>
 
         {/* Energy + mood */}
-        <div className="flex items-center gap-4 mt-1">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 4 }}>
           {day.energyBefore != null && (
-            <span className="font-mono text-xs text-muted">
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
               Energy: {day.energyBefore}/10
             </span>
           )}
@@ -85,7 +95,7 @@ export function FitnessDayCard({ day }: FitnessDayCardProps) {
 
         {/* Public notes */}
         {day.notes && (
-          <p className="font-sans text-sm text-muted mt-2 leading-relaxed">
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'var(--muted)', marginTop: 8, lineHeight: 1.6 }}>
             {day.notes}
           </p>
         )}

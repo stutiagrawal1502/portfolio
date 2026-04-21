@@ -78,7 +78,7 @@ export function DawnCard({
 
   if (href) {
     return (
-      <Link href={href} className="block group" style={{ height: '100%', textDecoration: 'none' }}>
+      <Link href={href} style={{ display: 'block', height: '100%', textDecoration: 'none' }}>
         {inner}
       </Link>
     )

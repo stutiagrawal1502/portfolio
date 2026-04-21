@@ -20,11 +20,18 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
   }, [])
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--paper)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--paper)' }}>
       {/* Private nav */}
       <nav
-        className="fixed top-0 left-0 right-0 z-50 border-b"
-        style={{ background: 'var(--surface)', borderColor: 'var(--border-solid)' }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          borderBottom: '1px solid var(--border-solid)',
+          background: 'var(--surface)',
+        }}
       >
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
@@ -34,7 +41,7 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
             >
               Stuti
             </Link>
-            <div className="hidden md:flex" style={{ alignItems: 'center', gap: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
               {[
                 { href: '/dashboard',   label: 'Dashboard'   },
                 { href: '/planner',     label: 'Planner'     },
