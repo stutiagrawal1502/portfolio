@@ -45,9 +45,13 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
               {[
                 { href: '/dashboard',   label: 'Dashboard'   },
                 { href: '/planner',     label: 'Planner'     },
+                { href: '/goals',       label: 'Goals'       },
+                { href: '/notes',       label: 'Notes'       },
+                { href: '/posts',       label: 'Posts'       },
                 { href: '/write',       label: 'Write'       },
-                { href: '/fitness-log', label: 'Fitness Log' },
+                { href: '/fitness-log', label: 'Fitness'     },
                 { href: '/health',      label: 'Health'      },
+                { href: '/finance',     label: 'Finance'     },
               ].map(link => (
                 <Link
                   key={link.href}

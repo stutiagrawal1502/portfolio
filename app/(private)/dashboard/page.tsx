@@ -6,7 +6,9 @@ import { WeekCalendar } from '@/components/dashboard/WeekCalendar'
 import { QuickWrite } from '@/components/dashboard/QuickWrite'
 import { HealthSnapshot } from '@/components/dashboard/HealthSnapshot'
 import { StreakBar } from '@/components/dashboard/StreakBar'
+import { QuickFinance } from '@/components/dashboard/QuickFinance'
 import { LiveClock } from './LiveClock'
+import { TodayBriefing } from './TodayBriefing'
 
 export default async function DashboardPage() {
   const [config, recentDays, postsCount] = await Promise.all([
@@ -45,9 +47,6 @@ export default async function DashboardPage() {
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 8 }}>
             Private dashboard
           </span>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: 'var(--ink)', marginBottom: 4, lineHeight: 1.2 }}>
-            Good morning, Stuti.
-          </h1>
           <LiveClock />
         </div>
 
@@ -68,6 +67,9 @@ export default async function DashboardPage() {
           ))}
         </div>
       </div>
+
+      {/* ── Today briefing ────────────────────────────────────────── */}
+      <TodayBriefing />
 
       {/* ── Week calendar ──────────────────────────────────────────── */}
       <div className="cockpit-card" style={{ marginBottom: 16 }}>
@@ -90,13 +92,14 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Bottom strip ───────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
         <StreakBar
           streak={streak}
           longestStreak={config?.longestStreak ?? 0}
           recentDays={recentDays}
         />
         <HealthSnapshot recentEnergy={recentDays} />
+        <QuickFinance />
       </div>
     </div>
   )

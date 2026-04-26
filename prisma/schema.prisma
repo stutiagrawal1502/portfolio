@@ -103,3 +103,82 @@ enum ContentStatus {
   POSTED
   SKIPPED
 }
+
+model FinanceEntry {
+  id          String          @id @default(cuid())
+  date        DateTime
+  type        FinanceType
+  amount      Float
+  category    FinanceCategory
+  note        String?
+  isRecurring Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Goal {
+  id          String     @id @default(cuid())
+  title       String
+  description String?    @db.Text
+  area        GoalArea
+  status      GoalStatus @default(ACTIVE)
+  targetDate  DateTime?
+  completedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model HabitLog {
+  id        String   @id @default(cuid())
+  date      DateTime
+  habit     String
+  done      Boolean  @default(false)
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([date, habit])
+}
+
+enum GoalArea {
+  FITNESS
+  CAREER
+  CREATIVE
+  HEALTH
+  FINANCE
+  PERSONAL
+  LEARNING
+}
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  DROPPED
+}
+
+enum FinanceType {
+  INCOME
+  EXPENSE
+}
+
+enum FinanceCategory {
+  FOOD
+  TRANSPORT
+  EMI
+  SAVINGS
+  HEALTH
+  UTILITIES
+  PERSONAL
+  WORK
+  SALARY
+  FREELANCE
+  OTHER
+}

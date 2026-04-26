@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { isToday } from '@/lib/utils'
 
@@ -29,11 +29,43 @@ const inputStyle: React.CSSProperties = {
 
 type ActiveForm = 'postIdea' | 'workout' | null
 
+type ContentStatus = 'IDEA' | 'DRAFTED' | 'RECORDED' | 'POSTED' | 'SKIPPED'
+
+interface ContentPlan {
+  id: string
+  title: string
+  type: string
+  platform: string
+  status: ContentStatus
+  notes: string | null
+  date: string
+}
+
+const STATUS_COLORS: Record<ContentStatus, string> = {
+  IDEA: '#C4B5FD',
+  DRAFTED: '#93C5FD',
+  RECORDED: '#FCD34D',
+  POSTED: '#86EFAC',
+  SKIPPED: '#6B7280',
+}
+
+const STATUS_NEXT: Record<ContentStatus, ContentStatus> = {
+  IDEA: 'DRAFTED',
+  DRAFTED: 'RECORDED',
+  RECORDED: 'POSTED',
+  POSTED: 'SKIPPED',
+  SKIPPED: 'IDEA',
+}
+
 export default function PlannerPage() {
   const today = new Date()
   const [currentMonth, setCurrentMonth] = useState(today.getMonth())
   const [currentYear, setCurrentYear]   = useState(today.getFullYear())
   const [selectedDate, setSelectedDate] = useState<Date>(today)
+
+  // Day plans
+  const [plans, setPlans]         = useState<ContentPlan[]>([])
+  const [plansLoading, setPlansLoading] = useState(false)
 
   // Form state
   const [activeForm, setActiveForm] = useState<ActiveForm>(null)
@@ -60,6 +92,24 @@ export default function PlannerPage() {
   const dateStr      = selectedDate.toISOString().split('T')[0]
   const dayLabel     = selectedDate.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })
 
+  const loadPlans = useCallback(async (date: Date) => {
+    setPlansLoading(true)
+    const d = date.toISOString().split('T')[0]
+    // Query plans for just this day
+    const start = `${d}T00:00:00.000Z`
+    const end   = `${d}T23:59:59.999Z`
+    try {
+      const res = await fetch(`/api/content-plan?startDate=${start}&endDate=${end}`)
+      if (res.ok) setPlans(await res.json())
+      else setPlans([])
+    } catch {
+      setPlans([])
+    }
+    setPlansLoading(false)
+  }, [])
+
+  useEffect(() => { loadPlans(selectedDate) }, [selectedDate, loadPlans])
+
   const prevMonth = () => {
     if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(y => y - 1) }
     else setCurrentMonth(m => m - 1)
@@ -84,7 +134,7 @@ export default function PlannerPage() {
     if (!ideaTitle.trim()) return
     setSaving(true)
     try {
-      await fetch('/api/content-plan', {
+      const res = await fetch('/api/content-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,6 +146,10 @@ export default function PlannerPage() {
           status:   'IDEA',
         }),
       })
+      if (res.ok) {
+        const created = await res.json()
+        setPlans(p => [...p, created])
+      }
       setIdeaTitle(''); setIdeaNotes('')
       setActiveForm(null)
       setSaved(true)
@@ -129,6 +183,27 @@ export default function PlannerPage() {
     } finally {
       setSaving(false)
     }
+  }
+
+  const advanceStatus = async (plan: ContentPlan) => {
+    const next = STATUS_NEXT[plan.status]
+    const res = await fetch('/api/content-plan', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: plan.id, status: next }),
+    })
+    if (res.ok) {
+      setPlans(p => p.map(x => x.id === plan.id ? { ...x, status: next } : x))
+    }
+  }
+
+  const deletePlan = async (id: string) => {
+    await fetch('/api/content-plan', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+    setPlans(p => p.filter(x => x.id !== id))
   }
 
   const actionButtons = [
@@ -228,12 +303,6 @@ export default function PlannerPage() {
                 {dayLabel}
               </h2>
             </div>
-            <Link
-              href={`/planner/${dateStr}`}
-              style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--muted)', textDecoration: 'none', border: '1px solid var(--border-solid)', borderRadius: 5, padding: '5px 10px' }}
-            >
-              Full view →
-            </Link>
           </div>
 
           {/* Action buttons */}
@@ -320,7 +389,6 @@ export default function PlannerPage() {
             <div style={{ background: 'var(--paper)', border: '1px solid #86EFAC30', borderRadius: 10, padding: '16px 18px', marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
               <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#86EFAC' }}>Log workout</span>
 
-              {/* Worked toggle */}
               <div>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>Worked out?</div>
                 <div className="cockpit-btn-group">
@@ -382,21 +450,65 @@ export default function PlannerPage() {
           )}
 
           {/* Divider */}
-          <div style={{ height: 1, background: 'var(--border-solid)', marginBottom: 20 }} />
+          <div style={{ height: 1, background: 'var(--border-solid)', marginBottom: 16 }} />
 
-          {/* Empty state */}
-          {activeForm === null && (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 160, gap: 10 }}>
+          {/* ── Plans for this day ── */}
+          {plansLoading ? (
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'var(--muted)', padding: '16px 0' }}>Loading…</div>
+          ) : plans.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 4 }}>
+                {plans.length} item{plans.length !== 1 ? 's' : ''} planned
+              </div>
+              {plans.map(plan => (
+                <div
+                  key={plan.id}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '10px 14px', background: 'var(--paper)',
+                    border: '1px solid var(--border-solid)', borderRadius: 8,
+                  }}
+                >
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'var(--ink)', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {plan.title}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                        {plan.type} · {plan.platform}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => advanceStatus(plan)}
+                    style={{
+                      fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.10em', textTransform: 'uppercase',
+                      padding: '4px 10px', borderRadius: 4, cursor: 'pointer', flexShrink: 0,
+                      border: `1px solid ${STATUS_COLORS[plan.status]}40`,
+                      background: `${STATUS_COLORS[plan.status]}15`,
+                      color: STATUS_COLORS[plan.status],
+                    }}
+                  >
+                    {plan.status}
+                  </button>
+                  <button
+                    onClick={() => deletePlan(plan.id)}
+                    style={{
+                      fontFamily: "'DM Mono', monospace", fontSize: 10, color: '#6B7280',
+                      background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', flexShrink: 0,
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 120, gap: 10 }}>
               <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 28, color: 'var(--border-solid)' }}>✦</div>
               <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'var(--muted)', letterSpacing: '0.08em' }}>
                 Nothing planned for this day.
               </div>
-              <Link
-                href={`/planner/${dateStr}`}
-                style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'var(--muted)', textDecoration: 'none', opacity: 0.5 }}
-              >
-                Open full day view →
-              </Link>
             </div>
           )}
         </div>

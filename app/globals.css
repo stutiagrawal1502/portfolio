@@ -393,6 +393,10 @@ body {
   animation-play-state: paused;
 }
 
+/* ─── Utility ─────────────────────────────────────────────────────────── */
+
+.font-mono-dm { font-family: 'DM Mono', monospace; }
+
 /* ─── New additions for world-class design ────────────────────────────── */
 
 /* Grain texture for paper sections */

@@ -28,7 +28,7 @@ export default async function FitnessLogPage() {
           </h1>
         </div>
         <Link
-          href="/write"
+          href="/dashboard"
           style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', background: 'var(--ink)', color: 'var(--paper)', padding: '8px 16px', borderRadius: 7, textDecoration: 'none' }}
         >
           + Log Today
