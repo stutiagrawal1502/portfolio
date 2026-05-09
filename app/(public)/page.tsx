@@ -6,6 +6,7 @@ import { DawnBackground } from '@/components/home/DawnBackground'
 import { TheToggle } from '@/components/home/TheToggle'
 import { WorkMode } from '@/components/home/WorkMode'
 import { LifeMode } from '@/components/home/LifeMode'
+import { NewsletterStrip } from '@/components/home/NewsletterStrip'
 import Link from 'next/link'
 
 type Mode = 'work' | 'life'
@@ -194,6 +195,9 @@ export default function HomePage() {
         {/* ── WRITING STRIP ─────────────────────────────────────────── */}
         <LatestWriting />
 
+        {/* ── NEWSLETTER ────────────────────────────────────────────── */}
+        <NewsletterStrip />
+
         {/* ── FOOTER STRIP ──────────────────────────────────────────── */}
         <footer style={{ borderTop: '1px solid var(--border-solid)', padding: '32px 48px' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
@@ -206,6 +210,7 @@ export default function HomePage() {
                 { href: '/expressions', label: 'Writing' },
                 { href: '/poems', label: 'Poems' },
                 { href: '/fitness', label: 'Journey' },
+                { href: '/contact', label: 'Contact' },
               ].map(l => (
                 <Link key={l.href} href={l.href} style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--muted)', textDecoration: 'none' }}>
                   {l.label}

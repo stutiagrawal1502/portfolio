@@ -46,6 +46,18 @@ function todayStr() {
   return new Date().toISOString().split('T')[0]
 }
 
+function calcStreak(logs: HabitLog[], habit: string): number {
+  let streak = 0
+  const d = new Date()
+  while (true) {
+    const dateStr = d.toISOString().split('T')[0]
+    const entry = logs.find(l => l.habit === habit && l.date.startsWith(dateStr))
+    if (entry?.done) { streak++; d.setDate(d.getDate() - 1) }
+    else break
+  }
+  return streak
+}
+
 function getLast7Days(): string[] {
   const days: string[] = []
   for (let i = 6; i >= 0; i--) {
@@ -269,11 +281,13 @@ export default function GoalsPage() {
                   </th>
                 ))}
                 <th style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: 'var(--muted)', textAlign: 'center', padding: '0 0 10px 8px', fontWeight: 400 }}>7d</th>
+                <th style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: 'var(--muted)', textAlign: 'center', padding: '0 0 10px 8px', fontWeight: 400 }}>🔥</th>
               </tr>
             </thead>
             <tbody>
               {HABITS.map(h => {
-                const weekDone = last7.filter(d => getHabitDone(h.key, d)).length
+                const weekDone  = last7.filter(d => getHabitDone(h.key, d)).length
+                const habitStreak = calcStreak(habitLogs, h.key)
                 return (
                   <tr key={h.key} style={{ borderTop: '1px solid var(--border-solid)' }}>
                     <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'var(--ink)', padding: '10px 12px 10px 0' }}>{h.label}</td>
@@ -302,6 +316,11 @@ export default function GoalsPage() {
                     <td style={{ textAlign: 'center', padding: '10px 0 10px 8px' }}>
                       <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, fontWeight: 600, color: weekDone >= 5 ? '#86EFAC' : weekDone >= 3 ? '#FCD34D' : 'var(--muted)' }}>
                         {weekDone}/7
+                      </span>
+                    </td>
+                    <td style={{ textAlign: 'center', padding: '10px 0 10px 8px' }}>
+                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, fontWeight: 600, color: habitStreak >= 7 ? '#F9A8D4' : habitStreak >= 3 ? '#FCD34D' : 'var(--muted)' }}>
+                        {habitStreak > 0 ? `${habitStreak}d` : '—'}
                       </span>
                     </td>
                   </tr>

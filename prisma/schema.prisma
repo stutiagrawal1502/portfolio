@@ -22,6 +22,7 @@ model Post {
   tags        String[]
   pillar      String?
   coverImage  String?
+  viewCount   Int        @default(0)
   publishedAt DateTime?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -161,6 +162,68 @@ enum GoalStatus {
   ACTIVE
   COMPLETED
   PAUSED
+  DROPPED
+}
+
+model WeeklyReview {
+  id         String   @id @default(cuid())
+  weekStart  DateTime @unique
+  rating     Int?
+  wentWell   String?  @db.Text
+  improved   String?  @db.Text
+  intention  String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model DailyPriority {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  p1        String?
+  p2        String?
+  p3        String?
+  p1Done    Boolean  @default(false)
+  p2Done    Boolean  @default(false)
+  p3Done    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Book {
+  id         String     @id @default(cuid())
+  title      String
+  author     String
+  status     BookStatus @default(READING)
+  startedAt  DateTime?
+  finishedAt DateTime?
+  rating     Int?
+  notes      String?    @db.Text
+  quote      String?    @db.Text
+  coverUrl   String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model MoodEntry {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  mood      Int
+  tags      String[]
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSignup {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+}
+
+enum BookStatus {
+  WANT_TO_READ
+  READING
+  COMPLETED
   DROPPED
 }
 

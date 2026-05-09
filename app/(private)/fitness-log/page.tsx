@@ -29,12 +29,20 @@ export default async function FitnessLogPage() {
             Fitness Log
           </h1>
         </div>
-        <Link
-          href="/dashboard"
-          style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', background: 'var(--ink)', color: 'var(--paper)', padding: '8px 16px', borderRadius: 7, textDecoration: 'none' }}
-        >
-          + Log Today
-        </Link>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <a
+            href="/api/export/fitness"
+            style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', background: 'transparent', color: 'var(--muted)', padding: '8px 14px', borderRadius: 7, textDecoration: 'none', border: '1px solid var(--border-solid)' }}
+          >
+            ↓ CSV
+          </a>
+          <Link
+            href="/dashboard"
+            style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', background: 'var(--ink)', color: 'var(--paper)', padding: '8px 16px', borderRadius: 7, textDecoration: 'none' }}
+          >
+            + Log Today
+          </Link>
+        </div>
       </div>
 
       {/* Stats strip */}

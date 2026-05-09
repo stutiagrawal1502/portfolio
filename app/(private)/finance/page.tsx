@@ -150,6 +150,8 @@ export default function FinancePage() {
             Money Tracker
           </h1>
         </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <a href="/api/export/finance" style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', background: 'transparent', color: 'var(--muted)', padding: '10px 14px', borderRadius: 7, textDecoration: 'none', border: '1px solid var(--border-solid)' }}>↓ CSV</a>
         <button
           onClick={() => setShowForm(f => !f)}
           style={{
@@ -168,6 +170,7 @@ export default function FinancePage() {
         >
           {showForm ? '✕ Cancel' : '+ Add Entry'}
         </button>
+        </div>
       </div>
 
       {/* Month nav */}

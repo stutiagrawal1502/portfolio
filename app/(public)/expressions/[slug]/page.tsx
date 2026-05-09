@@ -70,6 +70,9 @@ export default async function PostPage({
 
   if (!post || post.status === 'PRIVATE') notFound()
 
+  // Fire-and-forget view count increment
+  prisma.post.update({ where: { id: post.id }, data: { viewCount: { increment: 1 } } }).catch(() => {})
+
   const date = post.publishedAt ?? post.createdAt
   const readTime = readingTime(post.content)
   const accentColor = typeAccents[post.type] ?? '#8A7F74'

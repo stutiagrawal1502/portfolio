@@ -9,6 +9,7 @@ import { StreakBar } from '@/components/dashboard/StreakBar'
 import { QuickFinance } from '@/components/dashboard/QuickFinance'
 import { LiveClock } from './LiveClock'
 import { TodayBriefing } from './TodayBriefing'
+import { DailyPriorities } from './DailyPriorities'
 
 export const dynamic = 'force-dynamic'
 
@@ -70,8 +71,11 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Today briefing ────────────────────────────────────────── */}
-      <TodayBriefing />
+      {/* ── Today briefing + priorities ───────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+        <DailyPriorities />
+        <TodayBriefing />
+      </div>
 
       {/* ── Week calendar ──────────────────────────────────────────── */}
       <div className="cockpit-card" style={{ marginBottom: 16 }}>
