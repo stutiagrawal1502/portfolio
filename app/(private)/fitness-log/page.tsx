@@ -17,7 +17,7 @@ export default async function FitnessLogPage() {
   const workedDays = days.filter(d => d.worked).length
 
   return (
-    <div style={{ padding: '28px 32px 64px', maxWidth: 800, margin: '0 auto' }}>
+    <div style={{ padding: '36px 40px 80px', maxWidth: 780, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>

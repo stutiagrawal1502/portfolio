@@ -111,7 +111,7 @@ export default function PostsPage() {
   const published = posts.filter(p => p.status === 'PUBLISHED').length
 
   return (
-    <div style={{ padding: '28px 32px 64px', maxWidth: 1100, margin: '0 auto' }}>
+    <div style={{ padding: '36px 40px 80px', maxWidth: 1100, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>

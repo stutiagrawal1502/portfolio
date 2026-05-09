@@ -52,7 +52,7 @@ export default async function DayPlannerPage({
   const dayNumber = config ? getDayNumber(config.startDate) : null
 
   return (
-    <div style={{ padding: '28px 32px 64px', maxWidth: 860, margin: '0 auto' }}>
+    <div style={{ padding: '36px 40px 80px', maxWidth: 860, margin: '0 auto' }}>
 
       {/* Breadcrumb + date header */}
       <div style={{ marginBottom: 32 }}>

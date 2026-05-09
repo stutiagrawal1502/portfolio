@@ -41,7 +41,7 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <div style={{ padding: '28px 32px 48px', maxWidth: 1280, margin: '0 auto' }}>
+    <div style={{ padding: '36px 40px 80px', maxWidth: 1100, margin: '0 auto' }}>
 
       {/* ── Top bar: greeting + stats ──────────────────────────────── */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 24 }}>
@@ -71,8 +71,8 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Today briefing + priorities ───────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+      {/* ── Priorities + Goals ────────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 16, marginBottom: 16 }}>
         <DailyPriorities />
         <TodayBriefing />
       </div>
@@ -88,17 +88,17 @@ export default async function DashboardPage() {
         />
       </div>
 
-      {/* ── Main 2-col grid ────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+      {/* ── Log + Write/Queue ──────────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 16, marginBottom: 16 }}>
         <QuickLog />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 }}>
           <QuickWrite />
           <ContentQueue />
         </div>
       </div>
 
-      {/* ── Bottom strip ───────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+      {/* ── Bottom: Streak + Health + Finance ──────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)', gap: 16 }}>
         <StreakBar
           streak={streak}
           longestStreak={config?.longestStreak ?? 0}

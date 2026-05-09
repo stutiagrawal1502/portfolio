@@ -86,7 +86,7 @@ export default function SettingsPage() {
   ]
 
   return (
-    <div style={{ padding: '28px 32px 64px', maxWidth: 680, margin: '0 auto' }}>
+    <div style={{ padding: '36px 40px 80px', maxWidth: 680, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
