@@ -21,6 +21,8 @@ const statusColors: Record<string, string> = {
   SKIPPED:   '#FCA5A5',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function DayPlannerPage({
   params,
 }: {

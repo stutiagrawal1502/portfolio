@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 type PostType = 'BLOG' | 'POEM' | 'JOURNAL' | 'ESSAY' | 'CSR' | 'SPORTS' | 'FITNESS_REFLECTION'
@@ -45,7 +45,7 @@ const POEM_FORMS = ['Free Verse', 'Haiku', 'Ghazal', 'Sonnet', 'Prose Poem']
 const BLOG_PILLARS = ['Risk & Audit', 'Career Growth', 'Consulting Life', 'Building in Public', 'Women at Work']
 const ESSAY_PILLARS = ['Observation', 'Reflection', 'Analysis', 'Personal Essay', 'Letter']
 
-export default function WritePage() {
+function WritePageInner() {
   const router       = useRouter()
   const searchParams = useSearchParams()
   const contentRef   = useRef<HTMLTextAreaElement>(null)
@@ -371,4 +371,8 @@ export default function WritePage() {
       </div>
     </div>
   )
+}
+
+export default function WritePage() {
+  return <Suspense><WritePageInner /></Suspense>
 }

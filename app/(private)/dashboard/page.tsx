@@ -10,6 +10,8 @@ import { QuickFinance } from '@/components/dashboard/QuickFinance'
 import { LiveClock } from './LiveClock'
 import { TodayBriefing } from './TodayBriefing'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const [config, recentDays, postsCount] = await Promise.all([
     prisma.journeyConfig.findUnique({ where: { id: 'singleton' } }),

@@ -3,6 +3,8 @@ import { getDayNumber, getStreak, getMilestoneLabel } from '@/lib/journey'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export default async function FitnessLogPage() {
   const [config, days] = await Promise.all([
     prisma.journeyConfig.findUnique({ where: { id: 'singleton' } }),

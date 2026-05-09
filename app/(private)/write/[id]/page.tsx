@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { useParams } from 'next/navigation'
 import { Toggle } from '@/components/ui/Toggle'
 
@@ -9,7 +9,7 @@ type PostStatus = 'DRAFT' | 'PUBLISHED'
 
 const postTypes: PostType[] = ['BLOG', 'POEM', 'JOURNAL', 'ESSAY', 'CSR', 'SPORTS', 'FITNESS_REFLECTION']
 
-export default function EditPostPage() {
+function EditPostPageInner() {
   const { id } = useParams<{ id: string }>()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -286,4 +286,8 @@ export default function EditPostPage() {
       </div>
     </div>
   )
+}
+
+export default function EditPostPage() {
+  return <Suspense><EditPostPageInner /></Suspense>
 }
