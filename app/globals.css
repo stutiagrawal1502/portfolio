@@ -549,18 +549,18 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .cockpit-card {
   background: var(--surface);
   border: 1px solid var(--border-solid);
-  border-radius: 12px;
-  padding: 20px 22px;
+  border-radius: 10px;
+  padding: 14px 16px;
 }
 
 .cockpit-label {
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .cockpit-input {
@@ -568,9 +568,9 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
   background: transparent;
   border: 1px solid var(--border-solid);
   border-radius: 7px;
-  padding: 9px 12px;
+  padding: 8px 10px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--ink);
   outline: none;
   transition: border-color 0.15s;
@@ -582,22 +582,22 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
 .cockpit-btn-group {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   background: var(--border-solid);
-  border-radius: 8px;
+  border-radius: 7px;
   padding: 3px;
 }
 
 .cockpit-btn {
   flex: 1;
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: none;
-  border-radius: 6px;
-  padding: 7px 0;
+  border-radius: 5px;
+  padding: 6px 0;
   cursor: pointer;
   transition: background 0.12s, color 0.12s;
   background: transparent;
@@ -612,9 +612,64 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .cockpit-stat-block {
   background: var(--surface);
   border: 1px solid var(--border-solid);
-  border-radius: 10px;
-  padding: 14px 18px;
+  border-radius: 8px;
+  padding: 10px 14px;
   flex: 1;
+}
+
+/* ─── Private layout responsive ──────────────────────────────────────── */
+.private-sidebar   { display: flex; }
+.private-bottom-nav { display: none; }
+
+@media (max-width: 767px) {
+  .private-sidebar    { display: none !important; }
+  .private-main       { margin-left: 0 !important; padding-bottom: 64px; }
+  .private-bottom-nav { display: flex !important; }
+}
+
+.private-bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--surface);
+  border-top: 1px solid var(--border-solid);
+  z-index: 100;
+  align-items: stretch;
+  justify-content: space-around;
+  padding: 0 4px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.private-bottom-nav a,
+.private-bottom-nav button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  transition: color 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.private-bottom-nav a.active,
+.private-bottom-nav a:active {
+  color: var(--ink);
+}
+
+.private-bottom-nav .nav-icon {
+  font-size: 18px;
+  line-height: 1;
 }
 
 /* ─── Write page ──────────────────────────────────────────────────────── */

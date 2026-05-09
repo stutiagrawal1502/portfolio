@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 
 function greeting(hour: number): string {
-  if (hour < 5)  return 'Burning the midnight oil,'
+  if (hour < 5)  return 'Burning midnight oil,'
   if (hour < 12) return 'Good morning,'
   if (hour < 17) return 'Good afternoon,'
   if (hour < 21) return 'Good evening,'
@@ -18,7 +18,7 @@ export function LiveClock() {
     const update = () => {
       const now = new Date()
       setGreet(greeting(now.getHours()))
-      const date = now.toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric' })
+      const date = now.toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })
       const t    = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
       setTime(`${date} · ${t}`)
     }
@@ -28,15 +28,15 @@ export function LiveClock() {
   }, [])
 
   return (
-    <>
-      <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: 'var(--ink)', marginBottom: 4, lineHeight: 1.2 }}>
+    <div style={{ lineHeight: 1.2 }}>
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: 'var(--ink)' }}>
         {greet} Stuti.
-      </h1>
+      </div>
       {time && (
-        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, marginTop: 4, color: 'var(--muted)' }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'var(--muted)', marginTop: 3 }}>
           {time}
-        </p>
+        </div>
       )}
-    </>
+    </div>
   )
 }

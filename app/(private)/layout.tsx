@@ -14,38 +14,47 @@ const NAV_GROUPS = [
   {
     label: 'Overview',
     links: [
-      { href: '/dashboard', label: 'Dashboard', icon: '◈' },
-      { href: '/planner',   label: 'Planner',   icon: '◷' },
-      { href: '/review',    label: 'Review',     icon: '✦' },
+      { href: '/dashboard', label: 'Dashboard' },
+      { href: '/planner',   label: 'Planner'   },
+      { href: '/review',    label: 'Review'    },
     ],
   },
   {
     label: 'Create',
     links: [
-      { href: '/write',   label: 'Write',   icon: '✏' },
-      { href: '/posts',   label: 'Posts',   icon: '▤'  },
-      { href: '/notes',   label: 'Notes',   icon: '◻' },
+      { href: '/write',   label: 'Write'  },
+      { href: '/posts',   label: 'Posts'  },
+      { href: '/notes',   label: 'Notes'  },
     ],
   },
   {
     label: 'Track',
     links: [
-      { href: '/goals',   label: 'Goals',   icon: '◎' },
-      { href: '/mood',    label: 'Mood',    icon: '◐' },
-      { href: '/reading', label: 'Reading', icon: '◫' },
+      { href: '/goals',   label: 'Goals'   },
+      { href: '/mood',    label: 'Mood'    },
+      { href: '/reading', label: 'Reading' },
     ],
   },
   {
     label: 'Body & Money',
     links: [
-      { href: '/fitness-log', label: 'Fitness', icon: '◑' },
-      { href: '/health',      label: 'Health',  icon: '◉' },
-      { href: '/finance',     label: 'Finance', icon: '◈' },
+      { href: '/fitness-log', label: 'Fitness'  },
+      { href: '/health',      label: 'Health'   },
+      { href: '/finance',     label: 'Finance'  },
     ],
   },
 ]
 
-const SIDEBAR_W = 212
+// Bottom nav — 5 most-used destinations on mobile
+const BOTTOM_NAV = [
+  { href: '/dashboard',   label: 'Home',    icon: '⌂' },
+  { href: '/write',       label: 'Write',   icon: '✏' },
+  { href: '/planner',     label: 'Plan',    icon: '◷' },
+  { href: '/goals',       label: 'Goals',   icon: '◎' },
+  { href: '/notes',       label: 'Notes',   icon: '◻' },
+]
+
+const SIDEBAR_W = 200
 
 export default function PrivateLayout({ children }: { children: React.ReactNode }) {
   const router   = useRouter()
@@ -71,45 +80,41 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--paper)' }}>
 
-      {/* ── Sidebar ─────────────────────────────────────────────── */}
-      <aside style={{
+      {/* ── Sidebar (desktop only) ───────────────────────────────── */}
+      <aside className="private-sidebar" style={{
         position: 'fixed', top: 0, left: 0, bottom: 0,
         width: SIDEBAR_W,
         background: 'var(--surface)',
         borderRight: '1px solid var(--border-solid)',
-        display: 'flex', flexDirection: 'column',
+        flexDirection: 'column',
         zIndex: 50, overflowY: 'auto',
       }}>
-
-        {/* Logo */}
-        <div style={{ padding: '22px 20px 16px', borderBottom: '1px solid var(--border-solid)' }}>
-          <Link href="/dashboard" style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 400, color: 'var(--ink)', textDecoration: 'none', display: 'block', marginBottom: 14 }}>
+        {/* Logo + search */}
+        <div style={{ padding: '18px 16px 12px', borderBottom: '1px solid var(--border-solid)' }}>
+          <Link href="/dashboard" style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 400, color: 'var(--ink)', textDecoration: 'none', display: 'block', marginBottom: 12 }}>
             Stuti
           </Link>
-          {/* Search button */}
           <button
             onClick={() => setSearchOpen(true)}
             style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: 8,
               fontFamily: "'DM Mono', monospace", fontSize: 10,
               color: 'var(--muted)', background: 'var(--paper)',
-              border: '1px solid var(--border-solid)', borderRadius: 7,
-              padding: '7px 10px', cursor: 'pointer', transition: 'border-color 0.15s',
+              border: '1px solid var(--border-solid)', borderRadius: 6,
+              padding: '6px 10px', cursor: 'pointer',
             }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--muted)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border-solid)')}
           >
-            <span style={{ fontSize: 12, opacity: 0.5 }}>⌘</span>
+            <span style={{ fontSize: 11, opacity: 0.4 }}>⌘</span>
             <span style={{ flex: 1, textAlign: 'left', letterSpacing: '0.06em' }}>Search</span>
-            <span style={{ fontSize: 9, opacity: 0.4, letterSpacing: '0.06em' }}>K</span>
+            <span style={{ fontSize: 9, opacity: 0.35, letterSpacing: '0.06em' }}>K</span>
           </button>
         </div>
 
         {/* Nav groups */}
-        <nav style={{ flex: 1, padding: '12px 0' }}>
+        <nav style={{ flex: 1, padding: '8px 0' }}>
           {NAV_GROUPS.map(group => (
-            <div key={group.label} style={{ marginBottom: 4 }}>
-              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)', opacity: 0.45, padding: '10px 20px 6px' }}>
+            <div key={group.label} style={{ marginBottom: 2 }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)', opacity: 0.4, padding: '8px 16px 4px' }}>
                 {group.label}
               </div>
               {group.links.map(link => {
@@ -119,21 +124,18 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
                     key={link.href}
                     href={link.href}
                     style={{
-                      display: 'flex', alignItems: 'center', gap: 10,
-                      padding: '8px 20px',
+                      display: 'flex', alignItems: 'center',
+                      padding: '7px 16px',
                       fontFamily: "'DM Sans', sans-serif", fontSize: 13,
                       color: active ? 'var(--ink)' : 'var(--muted)',
                       textDecoration: 'none',
                       background: active ? 'var(--border-solid)' : 'transparent',
-                      borderLeft: active ? '2px solid var(--ink)' : '2px solid transparent',
+                      borderLeft: `2px solid ${active ? 'var(--ink)' : 'transparent'}`,
                       transition: 'all 0.12s',
                     }}
                     onMouseEnter={e => { if (!active) e.currentTarget.style.color = 'var(--ink)' }}
                     onMouseLeave={e => { if (!active) e.currentTarget.style.color = 'var(--muted)' }}
                   >
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, opacity: active ? 0.7 : 0.35, width: 14, textAlign: 'center', flexShrink: 0 }}>
-                      {link.icon}
-                    </span>
                     {link.label}
                   </Link>
                 )
@@ -142,39 +144,59 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
           ))}
         </nav>
 
-        {/* Bottom: public + sign out */}
-        <div style={{ padding: '12px 16px 20px', borderTop: '1px solid var(--border-solid)', display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Link
-            href="/settings"
-            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 4px', fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.06em', color: 'var(--muted)', textDecoration: 'none', transition: 'color 0.15s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted)')}
-          >
-            ⚙ Settings
-          </Link>
-          <Link
-            href="/"
-            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 4px', fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.06em', color: 'var(--muted)', textDecoration: 'none', transition: 'color 0.15s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted)')}
-          >
-            ← Public site
-          </Link>
+        {/* Bottom */}
+        <div style={{ padding: '10px 14px 20px', borderTop: '1px solid var(--border-solid)', display: 'flex', flexDirection: 'column', gap: 0 }}>
+          {[
+            { href: '/settings', label: 'Settings'     },
+            { href: '/',         label: '← Public site' },
+          ].map(l => (
+            <Link
+              key={l.href}
+              href={l.href}
+              style={{ padding: '7px 2px', fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.06em', color: 'var(--muted)', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'color 0.15s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted)')}
+            >
+              {l.label}
+            </Link>
+          ))}
           <button
             onClick={() => logout(router)}
-            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 4px', fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.06em', color: 'var(--muted)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.15s', textAlign: 'left' }}
+            style={{ padding: '7px 2px', fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.06em', color: 'var(--muted)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', whiteSpace: 'nowrap', transition: 'color 0.15s', width: '100%' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--dawn-rose)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted)')}
           >
-            ✕ Sign out
+            Sign out
           </button>
         </div>
       </aside>
 
       {/* ── Main content ────────────────────────────────────────── */}
-      <main style={{ marginLeft: SIDEBAR_W, flex: 1, minHeight: '100vh', minWidth: 0 }}>
+      <main className="private-main" style={{ marginLeft: SIDEBAR_W, flex: 1, minHeight: '100vh', minWidth: 0 }}>
         {children}
       </main>
+
+      {/* ── Mobile bottom nav ───────────────────────────────────── */}
+      <nav className="private-bottom-nav">
+        {BOTTOM_NAV.map(item => {
+          const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={active ? 'active' : ''}
+              style={{ color: active ? 'var(--ink)' : 'var(--muted)' }}
+            >
+              <span className="nav-icon" style={{ opacity: active ? 1 : 0.5 }}>{item.icon}</span>
+              <span>{item.label}</span>
+            </Link>
+          )
+        })}
+        <button onClick={() => setSearchOpen(true)} style={{ color: 'var(--muted)' }}>
+          <span className="nav-icon" style={{ opacity: 0.5 }}>⌕</span>
+          <span>Search</span>
+        </button>
+      </nav>
 
       <CommandPalette isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>

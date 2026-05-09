@@ -123,7 +123,7 @@ function ReviewPageInner() {
   const isCurrentWeek = weekOffset === 0
 
   return (
-    <div style={{ padding: '36px 40px 80px', maxWidth: 720, margin: '0 auto' }}>
+    <div style={{ padding: '20px 24px 60px', maxWidth: 720, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ marginBottom: 40 }}>
