@@ -100,8 +100,8 @@ export default function AboutPage() {
 
       {/* ── HERO ───────────────────────────────────────────────────────── */}
       <div style={{ borderBottom: '1px solid var(--border-solid)', marginBottom: 0 }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 48px 72px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 64, alignItems: 'center' }}>
+        <div className="pub-container" style={{ paddingTop: 64, paddingBottom: 56 }}>
+          <div className="pub-hero-grid">
 
             {/* Left — text */}
             <div>
@@ -156,10 +156,10 @@ export default function AboutPage() {
             </div>
 
             {/* Right — photo */}
-            <div style={{ position: 'relative', flexShrink: 0 }}>
+            <div style={{ position: 'relative', flexShrink: 0, width: 'min(220px, 100%)' }}>
               <div style={{
-                width: 220,
-                height: 260,
+                width: '100%',
+                aspectRatio: '220/260',
                 position: 'relative',
                 overflow: 'hidden',
               }}>
@@ -187,11 +187,11 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px' }}>
+      <div className="pub-container">
 
         {/* ── EXPERIENCE ─────────────────────────────────────────────── */}
         <section style={{ paddingTop: 72, paddingBottom: 72, borderBottom: '1px solid var(--border-solid)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 64 }}>
+          <div className="pub-grid-label">
 
             {/* Label column */}
             <div>
@@ -274,7 +274,7 @@ export default function AboutPage() {
 
         {/* ── SKILLS ─────────────────────────────────────────────────── */}
         <section style={{ paddingTop: 72, paddingBottom: 72, borderBottom: '1px solid var(--border-solid)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 64 }}>
+          <div className="pub-grid-label">
             <div>
               <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
                 Skills
@@ -300,7 +300,7 @@ export default function AboutPage() {
 
         {/* ── EDUCATION ──────────────────────────────────────────────── */}
         <section style={{ paddingTop: 72, paddingBottom: 72, borderBottom: '1px solid var(--border-solid)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 64 }}>
+          <div className="pub-grid-label">
             <div>
               <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
                 Education
@@ -328,13 +328,13 @@ export default function AboutPage() {
 
         {/* ── BEYOND WORK ────────────────────────────────────────────── */}
         <section style={{ paddingTop: 72, paddingBottom: 72, borderBottom: '1px solid var(--border-solid)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 64 }}>
+          <div className="pub-grid-label">
             <div>
               <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
                 Beyond work
               </span>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            <div className="pub-grid-2">
               {[
                 {
                   icon: '✦',
@@ -391,7 +391,7 @@ export default function AboutPage() {
 
         {/* ── CONNECT ────────────────────────────────────────────────── */}
         <section id="connect" style={{ paddingTop: 72 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 64 }}>
+          <div className="pub-grid-label">
             <div>
               <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
                 Connect

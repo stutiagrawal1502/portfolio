@@ -43,7 +43,7 @@ export default function HomePage() {
       }}>
         <DawnBackground />
 
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1100, margin: '0 auto', padding: '0 48px', paddingTop: 100 }}>
+        <div className="pub-container" style={{ position: 'relative', zIndex: 10, paddingTop: 100 }}>
 
           {/* Eyebrow */}
           <motion.div
@@ -109,7 +109,7 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4, duration: 0.6 }}
-          style={{ position: 'absolute', bottom: 36, left: 48, display: 'flex', alignItems: 'center', gap: 12 }}
+          style={{ position: 'absolute', bottom: 36, left: 'max(16px, 3vw)', display: 'flex', alignItems: 'center', gap: 12 }}
         >
           <div style={{ width: 1, height: 44, background: 'rgba(248,244,238,0.14)' }} />
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(248,244,238,0.22)' }}>
@@ -123,7 +123,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6, duration: 0.6 }}
-            style={{ position: 'absolute', bottom: 36, right: 48, textAlign: 'right' }}
+            style={{ position: 'absolute', bottom: 36, right: 'max(16px, 3vw)', textAlign: 'right' }}
           >
             <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'rgba(248,244,238,0.22)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>Journey</div>
             <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 22, fontWeight: 700, color: 'rgba(134, 239, 172, 0.7)', lineHeight: 1 }}>
@@ -156,7 +156,7 @@ export default function HomePage() {
           borderBottom: '1px solid var(--border-solid)',
           background: 'var(--paper)',
         }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px', height: 48, display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div className="pub-container" style={{ height: 48, display: 'flex', alignItems: 'center', gap: 16 }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={mode}
@@ -182,7 +182,8 @@ export default function HomePage() {
         <AnimatePresence mode="wait">
           <motion.section
             key={`mode-${mode}`}
-            style={{ maxWidth: 1100, margin: '0 auto', padding: '72px 48px' }}
+            className="pub-section"
+            style={{}}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -199,12 +200,12 @@ export default function HomePage() {
         <NewsletterStrip />
 
         {/* ── FOOTER STRIP ──────────────────────────────────────────── */}
-        <footer style={{ borderTop: '1px solid var(--border-solid)', padding: '32px 48px' }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+        <footer className="pub-footer">
+          <div className="pub-footer-inner">
             <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: 'var(--muted)', fontStyle: 'italic' }}>
               Stuti Agrawal
             </span>
-            <div style={{ display: 'flex', gap: 28 }}>
+            <div className="pub-footer-links" style={{ display: 'flex', gap: 20 }}>
               {[
                 { href: '/about', label: 'About' },
                 { href: '/expressions', label: 'Writing' },
@@ -250,20 +251,20 @@ function LatestWriting() {
 
   return (
     <section style={{ borderTop: '1px solid var(--border-solid)' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '72px 48px' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48 }}>
+      <div className="pub-section">
+        <div className="pub-section-header" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40 }}>
           <div>
             <span className="section-eyebrow">Writing</span>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 400, color: 'var(--ink)', lineHeight: 1.1 }}>
               Latest expressions
             </h2>
           </div>
-          <Link href="/expressions" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 500, color: 'var(--muted)', textDecoration: 'none' }}>
+          <Link href="/expressions" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 500, color: 'var(--muted)', textDecoration: 'none', whiteSpace: 'nowrap' }}>
             View all →
           </Link>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+        <div className="pub-grid-3">
           {posts.map((post, i) => (
             <Link key={post.id} href={`/expressions/${post.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
               <div className="card" style={{

@@ -47,7 +47,7 @@ function ContactForm() {
 
   return (
     <form onSubmit={send} style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+      <div className="pub-grid-2" style={{ gap: 24 }}>
         <div>
           <label style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: 8 }}>Name</label>
           <input value={name} onChange={e => setName(e.target.value)} placeholder="Your name" style={inputStyle} />
@@ -77,7 +77,7 @@ function ContactForm() {
 
 export default function ContactPage() {
   return (
-    <main style={{ minHeight: '100vh', background: 'var(--paper)', padding: '80px 24px 120px' }}>
+    <main style={{ minHeight: '100vh', background: 'var(--paper)', padding: '60px 16px 80px' }}>
       <div style={{ maxWidth: 640, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ marginBottom: 64 }}>
@@ -97,7 +97,7 @@ export default function ContactPage() {
         </Suspense>
 
         {/* Alternative contacts */}
-        <div style={{ marginTop: 64, paddingTop: 40, borderTop: '1px solid var(--border-solid)', display: 'flex', gap: 32 }}>
+        <div style={{ marginTop: 64, paddingTop: 40, borderTop: '1px solid var(--border-solid)', display: 'flex', gap: 24, flexWrap: 'wrap' }}>
           {[
             { label: 'LinkedIn', value: 'stuti-agrawal-link', href: 'https://www.linkedin.com/in/stuti-agrawal-link' },
             { label: 'Email', value: 'stutiagrawal1402@gmail.com', href: 'mailto:stutiagrawal1402@gmail.com' },

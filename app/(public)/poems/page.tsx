@@ -26,7 +26,7 @@ export default async function PoemsPage() {
   })
 
   return (
-    <main className="poem-bg" style={{ padding: '40px 24px 96px', minHeight: '80vh' }}>
+    <main className="poem-bg" style={{ padding: '40px 16px 96px', minHeight: '80vh' }}>
       <div style={{ maxWidth: 560, margin: '0 auto' }}>
 
         {/* Header — deliberately sparse */}

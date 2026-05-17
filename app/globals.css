@@ -623,6 +623,56 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
   .nav-desktop-links { display: none !important; }
 }
 
+/* ─── Public site layout utilities ────────────────────────────────────── */
+
+/* Horizontal container — max 1100px, 48px side padding */
+.pub-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+/* Section with vertical + horizontal padding */
+.pub-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 48px;
+}
+
+/* Grids */
+.pub-grid-7-5   { display: grid; grid-template-columns: 7fr 5fr; gap: 16px; }
+.pub-grid-3     { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.pub-grid-2     { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.pub-grid-label { display: grid; grid-template-columns: 200px 1fr; gap: 64px; } /* About sidebar label */
+.pub-hero-grid  { display: grid; grid-template-columns: 1fr auto; gap: 64px; align-items: center; }
+
+/* Footer */
+.pub-footer     { padding: 32px 48px; border-top: 1px solid var(--border-solid); }
+.pub-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+
+/* ─── Public mobile overrides (≤767px) ─────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Tighter container padding */
+  .pub-container   { padding-left: 16px; padding-right: 16px; }
+  .pub-section     { padding: 40px 16px; }
+
+  /* Grids → single column */
+  .pub-grid-7-5   { grid-template-columns: 1fr; }
+  .pub-grid-3     { grid-template-columns: 1fr; }
+  .pub-grid-2     { grid-template-columns: 1fr; }
+  .pub-grid-label { grid-template-columns: 1fr; gap: 16px; }
+  .pub-hero-grid  { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Footer */
+  .pub-footer      { padding: 24px 16px; }
+  .pub-footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .pub-footer-links { flex-wrap: wrap; gap: 12px !important; }
+
+  /* Section headers with space-between (title + link) */
+  .pub-section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
+}
+
 /* ─── Responsive layout utilities ─────────────────────────────────────── */
 
 /* Page wrappers — padding shrinks on mobile */

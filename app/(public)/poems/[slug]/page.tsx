@@ -33,7 +33,7 @@ export default async function PoemPage({
   const date = poem.publishedAt ?? poem.createdAt
 
   return (
-    <main className="poem-bg" style={{ padding: '80px 24px 120px' }}>
+    <main className="poem-bg" style={{ padding: '60px 16px 80px' }}>
       <article style={{ maxWidth: 520, margin: '0 auto' }}>
 
         {/* Eyebrow */}

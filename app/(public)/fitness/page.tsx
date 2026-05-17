@@ -29,7 +29,7 @@ export default async function FitnessPage() {
     : 'soon'
 
   return (
-    <main style={{ padding: '40px 48px 96px', maxWidth: 680, margin: '0 auto' }}>
+    <main style={{ maxWidth: 680, margin: '0 auto', paddingTop: 40, paddingBottom: 96, paddingLeft: 'min(48px, 4vw)', paddingRight: 'min(48px, 4vw)' }}>
 
       {/* Oversized day number hero */}
       <div style={{ marginBottom: 40, position: 'relative' }}>

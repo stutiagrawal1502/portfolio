@@ -73,10 +73,8 @@ export function Nav() {
         style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, transition: 'all 0.3s' }}
       >
         <div
+          className="pub-container"
           style={{
-            maxWidth: 1100,
-            margin: '0 auto',
-            padding: '0 48px',
             height: 64,
             display: 'flex',
             alignItems: 'center',

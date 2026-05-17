@@ -40,7 +40,7 @@ const projects = [
 
 export default function CSRPage() {
   return (
-    <main style={{ background: 'var(--paper)', padding: '80px 24px 120px' }}>
+    <main style={{ background: 'var(--paper)', padding: '60px 16px 80px' }}>
       <div style={{ maxWidth: 780, margin: '0 auto' }}>
 
         {/* Eyebrow */}

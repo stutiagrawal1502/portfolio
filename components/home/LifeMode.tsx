@@ -9,7 +9,7 @@ export function LifeMode({ dayNumber }: LifeModeProps) {
   return (
     <div>
       {/* Section header */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40 }}>
+      <div className="pub-section-header" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40 }}>
         <div>
           <span className="section-eyebrow">Personal</span>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: 400, color: 'var(--ink)', lineHeight: 1.1 }}>
@@ -21,8 +21,7 @@ export function LifeMode({ dayNumber }: LifeModeProps) {
         </Link>
       </div>
 
-      {/* Fixed grid — inline styles only, no Tailwind */}
-      <div style={{ display: 'grid', gridTemplateColumns: '7fr 5fr', gap: 16 }}>
+      <div className="pub-grid-7-5">
 
         {/* Journey featured card */}
         <DawnCard

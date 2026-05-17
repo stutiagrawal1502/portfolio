@@ -45,8 +45,8 @@ export default function ExpressionsPage() {
   }, [activeFilter])
 
   return (
-    <main style={{ padding: '40px 24px 96px' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <main style={{ padding: '40px 0 96px' }}>
+      <div className="pub-container">
 
         {/* Header */}
         <div
@@ -179,7 +179,7 @@ function EditorialLayout({ posts }: { posts: Post[] }) {
           return (
             <div
               key={gi}
-              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}
+              className="pub-grid-2" style={{}}
             >
               {group.map(p => (
                 <PostCard key={p.id} post={p} />
@@ -199,7 +199,7 @@ function EditorialLayout({ posts }: { posts: Post[] }) {
         return (
           <div
             key={gi}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}
+            className="pub-grid-3" style={{}}
           >
             {group.map(p => (
               <PostCard key={p.id} post={p} size="compact" />
