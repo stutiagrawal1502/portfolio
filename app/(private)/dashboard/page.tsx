@@ -41,7 +41,7 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <div style={{ padding: '16px 20px 20px', maxWidth: 1100, margin: '0 auto' }}>
+    <div className="dash-content" style={{ maxWidth: 1100, margin: '0 auto' }}>
 
       {/* ── Header: greeting + stats ───────────────────────────── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, gap: 12, flexWrap: 'wrap' }}>
@@ -51,9 +51,9 @@ export default async function DashboardPage() {
           </span>
           <LiveClock />
         </div>
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div className="dash-stat-strip" style={{ display: 'flex', gap: 6 }}>
           {stats.map(s => (
-            <div key={s.label} style={{ background: 'var(--surface)', border: '1px solid var(--border-solid)', borderRadius: 8, padding: '8px 12px' }}>
+            <div key={s.label} style={{ background: 'var(--surface)', border: '1px solid var(--border-solid)', borderRadius: 8, padding: '8px 12px', minWidth: 64 }}>
               <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 3 }}>
                 {s.label}
               </div>
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Row 1: Priorities + Goals + Week calendar ──────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr)', gap: 8, marginBottom: 8 }}>
+      <div className="dash-row-1">
         <DailyPriorities />
         <TodayBriefing />
         <div className="cockpit-card">
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Row 2: Morning Log + Quick Write + Content Queue ────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.1fr) minmax(0,0.9fr)', gap: 8, marginBottom: 8 }}>
+      <div className="dash-row-2">
         <QuickLog />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0 }}>
           <QuickWrite />
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Row 3: Streak + Health + Quick Expense ──────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)', gap: 8 }}>
+      <div className="dash-row-3">
         <StreakBar
           streak={streak}
           longestStreak={config?.longestStreak ?? 0}

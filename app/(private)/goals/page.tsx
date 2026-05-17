@@ -176,7 +176,7 @@ export default function GoalsPage() {
   const areas: (GoalArea | 'ALL')[] = ['ALL', 'FITNESS', 'CAREER', 'CREATIVE', 'HEALTH', 'FINANCE', 'PERSONAL', 'LEARNING']
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 920, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 920, margin: "0 auto" }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 32 }}>
@@ -301,7 +301,7 @@ export default function GoalsPage() {
                             onClick={() => toggleHabit(h.key, d, done)}
                             disabled={habitSaving === key}
                             style={{
-                              width: 28, height: 28, borderRadius: 6,
+                              width: 36, height: 36, borderRadius: 6,
                               border: `1px solid ${done ? '#86EFAC' : isToday ? '#F9A8D440' : 'var(--border-solid)'}`,
                               background: done ? '#86EFAC20' : 'transparent',
                               cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',

@@ -92,7 +92,7 @@ export default function HealthPage() {
   }
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 780, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 780, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
@@ -135,7 +135,7 @@ export default function HealthPage() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* Metric name + value + unit row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 80px', gap: 10 }}>
+          <div className="health-row-1">
             <input
               style={inputStyle}
               type="text"
@@ -162,7 +162,7 @@ export default function HealthPage() {
           </div>
 
           {/* Date + notes row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 10 }}>
+          <div className="health-row-2">
             <input
               style={{ ...inputStyle, fontFamily: "'DM Mono', monospace", fontSize: 13 }}
               type="date"

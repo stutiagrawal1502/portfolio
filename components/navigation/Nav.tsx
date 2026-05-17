@@ -98,8 +98,8 @@ export function Nav() {
             Stuti Agrawal
           </Link>
 
-          {/* Desktop links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
+          {/* Desktop links — hidden on mobile */}
+          <div className="nav-desktop-links" style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
             {navLinks.map(link => (
               <Link
                 key={link.href}
@@ -120,7 +120,7 @@ export function Nav() {
                 {link.label}
               </Link>
             ))}
-            {isAuthed && (
+            {isAuthed ? (
               <Link
                 href="/dashboard"
                 style={{
@@ -133,6 +133,24 @@ export function Nav() {
                 }}
               >
                 Dashboard →
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                style={{
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  color: isDark ? 'rgba(248,244,238,0.9)' : 'var(--ink)',
+                  textDecoration: 'none',
+                  border: `1px solid ${isDark ? 'rgba(248,244,238,0.25)' : 'var(--border-solid)'}`,
+                  borderRadius: 6,
+                  padding: '6px 14px',
+                  transition: 'all 0.15s',
+                }}
+              >
+                Sign in
               </Link>
             )}
           </div>
@@ -155,6 +173,7 @@ export function Nav() {
         onClose={() => setMobileOpen(false)}
         links={navLinks}
         showDashboard={isAuthed}
+        showLogin={!isAuthed}
         mode={mode}
       />
     </>

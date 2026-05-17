@@ -232,7 +232,7 @@ function WritePageInner() {
             type === 'FITNESS_REFLECTION' ? 'Reflection title' :
             'Untitled'
           }
-          style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Playfair Display', serif", fontSize: poemMode ? '2rem' : '2.75rem', fontWeight: 400, color: 'var(--ink)', lineHeight: 1.2, marginBottom: 24, textAlign: poemMode ? 'center' : 'left' }}
+          style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Playfair Display', serif", fontSize: poemMode ? 'clamp(1.4rem,5vw,2rem)' : 'clamp(1.6rem,6vw,2.75rem)', fontWeight: 400, color: 'var(--ink)', lineHeight: 1.2, marginBottom: 24, textAlign: poemMode ? 'center' : 'left' }}
         />
 
         {/* Accent separator */}

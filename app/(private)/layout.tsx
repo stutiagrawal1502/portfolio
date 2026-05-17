@@ -38,6 +38,7 @@ const NAV_GROUPS = [
   {
     label: 'Body & Money',
     links: [
+      { href: '/routine',     label: 'Routine'  },
       { href: '/fitness-log', label: 'Fitness'  },
       { href: '/health',      label: 'Health'   },
       { href: '/finance',     label: 'Finance'  },

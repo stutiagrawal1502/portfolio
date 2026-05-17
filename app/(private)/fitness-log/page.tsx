@@ -17,7 +17,7 @@ export default async function FitnessLogPage() {
   const workedDays = days.filter(d => d.worked).length
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 780, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 780, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
@@ -46,7 +46,7 @@ export default async function FitnessLogPage() {
       </div>
 
       {/* Stats strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 24 }}>
+      <div className="stats-4">
         {[
           { label: 'Day', value: dayNumber, suffix: '/180', color: '#93C5FD' },
           { label: 'Streak', value: streak, suffix: ' days', color: '#86EFAC' },

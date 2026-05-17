@@ -9,10 +9,11 @@ interface MobileNavProps {
   onClose: () => void
   links: { href: string; label: string }[]
   showDashboard: boolean
+  showLogin?: boolean
   mode: 'work' | 'life'
 }
 
-export function MobileNav({ isOpen, onClose, links, showDashboard, mode }: MobileNavProps) {
+export function MobileNav({ isOpen, onClose, links, showDashboard, showLogin, mode }: MobileNavProps) {
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -115,6 +116,26 @@ export function MobileNav({ isOpen, onClose, links, showDashboard, mode }: Mobil
                   }}
                 >
                   Dashboard →
+                </Link>
+              )}
+              {showLogin && (
+                <Link
+                  href="/login"
+                  onClick={onClose}
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: 13,
+                    letterSpacing: '0.10em',
+                    textTransform: 'uppercase',
+                    color: 'var(--ink)',
+                    textDecoration: 'none',
+                    padding: '14px 0',
+                    display: 'block',
+                    borderTop: '1px solid var(--border-solid)',
+                    marginTop: 8,
+                  }}
+                >
+                  Sign in →
                 </Link>
               )}
             </nav>

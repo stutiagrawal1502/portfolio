@@ -617,6 +617,73 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
   flex: 1;
 }
 
+/* ─── Public nav responsive ───────────────────────────────────────────── */
+.nav-desktop-links { display: flex; }
+@media (max-width: 767px) {
+  .nav-desktop-links { display: none !important; }
+}
+
+/* ─── Responsive layout utilities ─────────────────────────────────────── */
+
+/* Page wrappers — padding shrinks on mobile */
+.page-content { padding: 20px 24px 60px; }
+.dash-content  { padding: 16px 20px 20px; }
+
+/* Dashboard grid rows */
+.dash-row-1 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr); gap: 8px; margin-bottom: 8px; }
+.dash-row-2 { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,0.9fr); gap: 8px; margin-bottom: 8px; }
+.dash-row-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+
+/* Stats strip — 4 equal columns, collapses to 2×2 */
+.stats-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+
+/* Two-column content layouts */
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Finance form: 3-col (amount/date/category) */
+.finance-form-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+
+/* Health form rows */
+.health-row-1 { display: grid; grid-template-columns: 1fr 120px 80px; gap: 10px; }
+.health-row-2 { display: grid; grid-template-columns: 160px 1fr; gap: 10px; }
+
+/* Planner: calendar sidebar + day detail */
+.planner-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+
+/* ─── Mobile overrides (≤767px) ──────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Tighter page padding */
+  .page-content { padding: 14px 12px 72px !important; }
+  .dash-content  { padding: 14px 10px 72px !important; }
+
+  /* Dashboard stacks to single column */
+  .dash-row-1 { grid-template-columns: 1fr; }
+  .dash-row-2 { grid-template-columns: 1fr; }
+  .dash-row-3 { grid-template-columns: 1fr 1fr; }  /* 2-col for small widgets */
+
+  /* Stats: 2×2 grid */
+  .stats-4 { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+  /* Content cols: stack */
+  .cols-2 { grid-template-columns: 1fr; gap: 10px; }
+
+  /* Finance form: single column */
+  .finance-form-3 { grid-template-columns: 1fr; gap: 10px; }
+
+  /* Health form: single column */
+  .health-row-1 { grid-template-columns: 1fr; }
+  .health-row-2 { grid-template-columns: 1fr; }
+
+  /* Planner: calendar stacks above detail */
+  .planner-layout { grid-template-columns: 1fr; }
+
+  /* Dashboard header stat strip wraps */
+  .dash-stat-strip { flex-wrap: wrap !important; row-gap: 6px !important; }
+
+  /* Cockpit cards — tighten inner padding on mobile */
+  .cockpit-card { padding: 12px 14px !important; }
+}
+
 /* ─── Private layout responsive ──────────────────────────────────────── */
 .private-sidebar   { display: flex; }
 .private-bottom-nav { display: none; }

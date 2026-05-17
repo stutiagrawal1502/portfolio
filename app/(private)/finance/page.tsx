@@ -138,7 +138,7 @@ export default function FinancePage() {
   const monthLabel = new Date(month + '-15').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 1100, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 1100, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24 }}>
@@ -216,7 +216,7 @@ export default function FinancePage() {
             ))}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 16 }}>
+          <div className="finance-form-3">
             {/* Amount */}
             <div>
               <label style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'var(--muted)', letterSpacing: '0.10em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Amount (₹)</label>
@@ -299,7 +299,7 @@ export default function FinancePage() {
       )}
 
       {/* Stats row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 }}>
+      <div className="stats-4">
         {[
           { label: 'Income',   value: formatINR(totalIncome),  color: '#86EFAC' },
           { label: 'Spent',    value: formatINR(totalExpense),  color: '#FCA5A5' },
@@ -313,7 +313,7 @@ export default function FinancePage() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div className="cols-2">
 
         {/* Category breakdown */}
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border-solid)', borderRadius: 8, padding: 20 }}>

@@ -212,7 +212,7 @@ export default function PlannerPage() {
   ]
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 1100, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 1100, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
@@ -232,8 +232,8 @@ export default function PlannerPage() {
         </Link>
       </div>
 
-      {/* 2-col: calendar + day detail */}
-      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 20 }}>
+      {/* Calendar + day detail — stacks on mobile */}
+      <div className="planner-layout">
 
         {/* ── Calendar ── */}
         <div className="cockpit-card">

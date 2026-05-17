@@ -85,7 +85,7 @@ export default function MoodPage() {
   const chartH = 80
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 780, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 780, margin: "0 auto" }}>
 
       {/* Header */}
       <div style={{ marginBottom: 32 }}>

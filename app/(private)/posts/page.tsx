@@ -135,7 +135,7 @@ export default function PostsPage() {
   })
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 1100, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 1100, margin: "0 auto" }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>

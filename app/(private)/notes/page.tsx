@@ -121,7 +121,7 @@ export default function NotesPage() {
   })
 
   return (
-    <div style={{ padding: '20px 24px 60px', maxWidth: 920, margin: '0 auto' }}>
+    <div className="page-content" style={{ maxWidth: 920, margin: "0 auto" }}>
 
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
@@ -209,7 +209,7 @@ export default function NotesPage() {
               marginLeft: 'auto',
               fontFamily: "'DM Mono', monospace", fontSize: 12,
               background: 'var(--paper)', border: '1px solid var(--border-solid)',
-              borderRadius: 6, padding: '6px 12px', color: 'var(--ink)', outline: 'none', width: 160,
+              borderRadius: 6, padding: '6px 12px', color: 'var(--ink)', outline: 'none', width: 'min(160px, 100%)',
             }}
           />
         </div>
