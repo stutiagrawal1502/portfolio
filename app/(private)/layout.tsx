@@ -61,6 +61,7 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
   const router   = useRouter()
   const pathname = usePathname()
   const [searchOpen, setSearchOpen] = useState(false)
+  const [moreOpen,   setMoreOpen]   = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', 'dark')
@@ -193,11 +194,79 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
             </Link>
           )
         })}
-        <button onClick={() => setSearchOpen(true)} style={{ color: 'var(--muted)' }}>
-          <span className="nav-icon" style={{ opacity: 0.5 }}>⌕</span>
-          <span>Search</span>
+        <button onClick={() => setMoreOpen(true)} style={{ color: 'var(--muted)' }}>
+          <span className="nav-icon" style={{ opacity: 0.5 }}>≡</span>
+          <span>More</span>
         </button>
       </nav>
+
+      {/* ── Mobile "More" full-screen drawer ─────────────────────── */}
+      {moreOpen && (
+        <div
+          style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'var(--paper)', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}
+          onClick={e => { if (e.target === e.currentTarget) setMoreOpen(false) }}
+        >
+          {/* Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', borderBottom: '1px solid var(--border-solid)', flexShrink: 0 }}>
+            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 400, color: 'var(--ink)' }}>Stuti</span>
+            <button onClick={() => setMoreOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--muted)', fontSize: 20, cursor: 'pointer', padding: '4px 8px', lineHeight: 1 }}>✕</button>
+          </div>
+
+          {/* All nav groups */}
+          <div style={{ flex: 1, padding: '8px 0 24px', overflowY: 'auto' }}>
+            {NAV_GROUPS.map(group => (
+              <div key={group.label} style={{ marginBottom: 4 }}>
+                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)', opacity: 0.4, padding: '10px 20px 4px' }}>
+                  {group.label}
+                </div>
+                {group.links.map(link => {
+                  const active = pathname === link.href || (link.href !== '/dashboard' && pathname.startsWith(link.href))
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMoreOpen(false)}
+                      style={{
+                        display: 'flex', alignItems: 'center', padding: '13px 20px',
+                        fontFamily: "'DM Sans', sans-serif", fontSize: 16,
+                        color: active ? 'var(--ink)' : 'var(--muted)',
+                        textDecoration: 'none',
+                        background: active ? 'var(--surface)' : 'transparent',
+                        borderLeft: `3px solid ${active ? 'var(--ink)' : 'transparent'}`,
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                })}
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom actions */}
+          <div style={{ borderTop: '1px solid var(--border-solid)', padding: '16px 20px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <button
+              onClick={() => setSearchOpen(true)}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+            >
+              <span style={{ opacity: 0.5 }}>⌕</span> Search
+            </button>
+            <Link
+              href="/"
+              onClick={() => setMoreOpen(false)}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', textDecoration: 'none' }}
+            >
+              <span>←</span> Public site
+            </Link>
+            <button
+              onClick={() => { setMoreOpen(false); logout(router) }}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--dawn-rose)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+            >
+              <span>→</span> Sign out
+            </button>
+          </div>
+        </div>
+      )}
 
       <CommandPalette isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>

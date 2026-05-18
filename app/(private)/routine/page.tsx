@@ -139,6 +139,14 @@ function todayKey() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
+// Parse "YYYY-MM-DD" as local date (not UTC — avoids timezone off-by-one)
+function parseLocalDate(str: string): Date {
+  const [y, m, d] = str.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  date.setHours(0, 0, 0, 0)
+  return date
+}
+
 function diffDays(a: Date, b: Date) {
   return Math.floor((b.getTime() - a.getTime()) / 86400000)
 }
@@ -176,7 +184,7 @@ export default function RoutinePage() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const day1 = day1Str ? new Date(day1Str) : null
+  const day1 = day1Str ? parseLocalDate(day1Str) : null
   const dayNumber = day1 ? diffDays(day1, today) + 1 : null
   const weekNum = dayNumber ? Math.ceil(Math.min(dayNumber, 30) / 7) : null
   const plan = weekNum ? WEEK_PLAN[Math.min(weekNum, 4)] : null
