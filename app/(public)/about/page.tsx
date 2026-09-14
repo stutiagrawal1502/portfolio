@@ -12,13 +12,14 @@ const experience = [
     role: 'Consultant',
     company: 'EY',
     period: 'Sep 2025 – Present',
-    duration: '8 months',
+    duration: '1 yr',
     accent: 'var(--dawn-blue)',
     accentBg: 'rgba(37,99,235,0.05)',
     points: [
-      'Delivering solutions in risk advisory, internal controls, and audit to help organisations strengthen their processes.',
-      'Turning complex problems into structured, actionable solutions.',
-      'Building client relationships based on trust and collaboration.',
+      'Leading a team of 3 testing 22 controls — data security, fraud detection, account validation, mobile-money processes — across 14 markets for a pan-African telecom operator; 10–15 new observations surfaced per quarter.',
+      'Designing new controls and uploading them to the ICOFR governance tool; cross-time-zone stakeholder reviews.',
+      'Supporting PO creation (~20/day) and invoice validation (50–60/day) for a global pharmaceutical client.',
+      'Running EY’s internal Opening Book Review for FY27 — verifying reported deal visibility against signed SOWs; 400 engagements reviewed to date.',
     ],
   },
   {
@@ -29,9 +30,8 @@ const experience = [
     accent: 'var(--dawn-blue)',
     accentBg: 'rgba(37,99,235,0.03)',
     points: [
-      'Internal Audit (IA), IFC VM and marketing audits for a major client.',
-      'Hands-on experience with SAP to perform audit testing.',
-      'Evaluating financial data, identifying inefficiencies, ensuring regulatory adherence.',
+      'IFC testing across 122 financial controls in Marketing and Virtual Merchandise for a major retail client, using SAP and SAP HANA.',
+      'Surfaced 9 new observations including 20 hygiene issues; closed all recommendations with cross-functional teams within 15 days.',
     ],
   },
   {
@@ -42,10 +42,10 @@ const experience = [
     accent: 'var(--garden-green)',
     accentBg: 'rgba(16,185,129,0.04)',
     points: [
-      'End-to-end asset management for a banking client across five locations.',
-      'Automated key aspects of the asset disposal process — reduced manual effort significantly.',
-      'Created SOPs and handled lost and damaged asset cases.',
-      'Data analysis in Excel; customised dashboards in Alteryx; weekly client presentations.',
+      'End-to-end IT/office asset management for a banking client across five locations — disposed ~18,000 assets, tracked centrally through an asset-management system (AMS).',
+      'Authored the disposal SOP; ran quarterly reconciliation of store and workspace assets against procurement need.',
+      'Reported quarterly on ticket resolution time against contractual KPIs; built dashboards for asset availability across cities.',
+      'Handled lost and damaged asset cases; data analysis in Excel, customised dashboards in Alteryx.',
     ],
   },
   {
@@ -60,6 +60,19 @@ const experience = [
       'Thorough research and document review for compliance and operational efficiency.',
       'Cross-functional team collaboration on process documentation.',
     ],
+  },
+]
+
+const awards = [
+  {
+    title: 'EY Badge of Honour — Passion Beyond Work',
+    desc: 'Recognised for contribution beyond core client work — EY Ripples (CSR) involvement, corporate sports, and a Mandala Art Workshop.',
+    accent: 'var(--poem-gold)',
+  },
+  {
+    title: 'EY Client Extraordinaire',
+    desc: 'Recognised for exemplifying client excellence — serving as a trusted business advisor and creating value for the client.',
+    accent: 'var(--dawn-blue)',
   },
 ]
 
@@ -265,6 +278,38 @@ export default function AboutPage() {
                         </li>
                       ))}
                     </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── AWARDS & RECOGNITION ──────────────────────────────────────── */}
+        <section style={{ paddingTop: 72, paddingBottom: 72, borderBottom: '1px solid var(--border-solid)' }}>
+          <div className="pub-grid-label">
+            <div>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                Awards
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {awards.map((award, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  gap: 16,
+                  alignItems: 'flex-start',
+                  padding: '20px 0',
+                  borderBottom: i < awards.length - 1 ? '1px solid var(--border-solid)' : 'none',
+                }}>
+                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: award.accent, flexShrink: 0, marginTop: 6 }} />
+                  <div>
+                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 400, color: 'var(--ink)', marginBottom: 6 }}>
+                      {award.title}
+                    </h3>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>
+                      {award.desc}
+                    </p>
                   </div>
                 </div>
               ))}
